@@ -5,7 +5,59 @@
     <title>My index page</title>
     <style media="screen">
       h1 {color:blue; font-size:12px;}
+      #dieBox {
+        text-align: center;
+        width: 25%;
+        margin: 0 auto;
+        border: 3px solid black;
+      }
+      #dieBox:hover {
+        text-align: center;
+        width: 25%;
+        margin: 0 auto;
+        border: 3px solid black;
+        background-color: blue;
+      }
     </style>
+    <script>
+    var x = 3;
+
+    function generateFunny() {
+      var funnyPhrases = [
+        "Another one by dj khalid",
+        "Where'd you get your peaches",
+        "Your life's a 404 error",
+        "Burger king foot lettuce",
+        "MCfalafel, MCbeer, MCrib, MCchicken, MCwaffle, MCpasta, and our newest installment; MCqueen",
+        "Guess what...? What if I told you I know exactly what you guessed"
+      ]
+      var funnyWords = document.getElementById('funnyWords');
+      funnyWords.innerHTML = funnyPhrases[rollDie() - 1];
+    }
+// return a random number between one and six.
+    function rollDie() {
+      var newNumber = Math.random()
+      newNumber = newNumber * 6
+      newNumber = Math.ceil(newNumber)
+      return newNumber
+    }
+// put a random number in the die box.
+    function getDieRoll() {
+      var dieBox = document.getElementById('dieBox');
+      dieBox.innerHTML = rollDie();
+    }
+
+
+
+//test using lists.
+    // var itemList = ["Diamond sword", "Diamond pickaxe", "Notch apple", "Black wool"]
+    // console.log(itemList[0]);
+    // console.log(itemList[1]);
+    // console.log(itemList[2]);
+    // console.log(itemList[3]);
+    // console.log(itemList[x]);
+    // THE CODE ABOVE IS CALLED ZOMBIE CODE, MEANING IT IS CODE THAT I COULD POSSIBLY USE IT LATER
+    </script>
   </head>
   <body>
     <h1>This is programming class</h1>
@@ -13,8 +65,11 @@
     <h2>This is what I like about this class</h2>
     <p>I learn about HTML, CSS, and Javascript in this class to make websites</p>
     <h2>Get to School</h2>
-    <p><a href="www/index.html">Play my game</a></p>
-    <a href="file.html">File</a>
-    <a href="about.html">About</a>
+    <p><a href="https://taysaun.github.io/www/index.html">Play my game</a></p>
+    <br>
+    <h2 id="funnyWords" onclick="generateFunny()">Funny words here...</h2>
+    <div id="dieBox" onclick="getDieRoll()">
+      Click to roll the die
+    </div>
   </body>
 </html>
