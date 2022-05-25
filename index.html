@@ -1,75 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>My index page</title>
-    <style media="screen">
-      h1 {color:blue; font-size:12px;}
-      #dieBox {
-        text-align: center;
-        width: 25%;
-        margin: 0 auto;
-        border: 3px solid black;
-      }
-      #dieBox:hover {
-        text-align: center;
-        width: 25%;
-        margin: 0 auto;
-        border: 3px solid black;
-        background-color: blue;
-      }
-    </style>
-    <script>
-    var x = 3;
 
-    function generateFunny() {
-      var funnyPhrases = [
-        "Another one by dj khalid",
-        "Where'd you get your peaches",
-        "Your life's a 404 error",
-        "Burger king foot lettuce",
-        "MCfalafel, MCbeer, MCrib, MCchicken, MCwaffle, MCpasta, and our newest installment; MCqueen",
-        "Guess what...? What if I told you I know exactly what you guessed"
-      ]
-      var funnyWords = document.getElementById('funnyWords');
-      funnyWords.innerHTML = funnyPhrases[rollDie() - 1];
-    }
-// return a random number between one and six.
-    function rollDie() {
-      var newNumber = Math.random()
-      newNumber = newNumber * 6
-      newNumber = Math.ceil(newNumber)
-      return newNumber
-    }
-// put a random number in the die box.
-    function getDieRoll() {
-      var dieBox = document.getElementById('dieBox');
-      dieBox.innerHTML = rollDie();
-    }
+<head>
+  <meta charset="utf-8">
+  <title>Wavelist</title>
+  <link rel="stylesheet" href="css/style.css" type="text/css">
+  <script src="js/functions.js" charset="utf-8"></script>
+</head>
 
-
-
-//test using lists.
-    // var itemList = ["Diamond sword", "Diamond pickaxe", "Notch apple", "Black wool"]
-    // console.log(itemList[0]);
-    // console.log(itemList[1]);
-    // console.log(itemList[2]);
-    // console.log(itemList[3]);
-    // console.log(itemList[x]);
-    // THE CODE ABOVE IS CALLED ZOMBIE CODE, MEANING IT IS CODE THAT I COULD POSSIBLY USE IT LATER
-    </script>
-  </head>
-  <body>
-    <h1>This is programming class</h1>
-    <p>I like programming class because it teaches me how to tell computers what to do</p>
-    <h2>This is what I like about this class</h2>
-    <p>I learn about HTML, CSS, and Javascript in this class to make websites</p>
-    <h2>Get to School</h2>
-    <p><a href="https://taysaun.github.io/www/index.html">Play my game</a></p>
-    <br>
-    <h2 id="funnyWords" onclick="generateFunny()">Funny words here...</h2>
-    <div id="dieBox" onclick="getDieRoll()">
-      Click to roll the die
+<body>
+<div id="content">
+  <!-- This is the head, which features the title of the page -->
+  <div id="header">
+    <h1>Wavelist</h1>
+  </div>
+  <!-- this is the navigation area that is called the menu -->
+  <div id="around">
+    <div id="menu">
+      <div id="home" class="links">
+        <div id="homename">
+          <a href="index.html"><h3>Home</h3></a>
+        </div>
+      </div>
+      <div id="game" class="links">
+        <div id="gamename">
+          <a href="./www/index.html"><h3>Game</h3></a>
+        </div>
+      </div>
+      <div id="about" class="links">
+        <div id="aboutname">
+          <a href="about.html"><h3>About</h3></a>
+        </div>
+      </div>
     </div>
-  </body>
+  <!-- this is the area where content is posted which I am calling the blog area -->
+    <div id="blog">
+      <div class="paragraphs">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam vel quam elementum pulvinar etiam. Consequat interdum varius sit amet. Nunc sed blandit libero volutpat sed cras ornare arcu dui. Et netus et malesuada fames ac. Quis eleifend quam adipiscing vitae proin. Lectus arcu bibendum at varius vel pharetra vel. Sodales ut eu sem integer vitae justo. Varius morbi enim nunc faucibus a pellentesque. Molestie ac feugiat sed lectus vestibulum mattis ullamcorper velit.
+
+          Accumsan lacus vel facilisis volutpat est velit. Nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque. Sit amet mauris commodo quis imperdiet massa. In ante metus dictum at tempor commodo ullamcorper. Habitasse platea dictumst vestibulum rhoncus. Massa vitae tortor condimentum lacinia quis vel eros donec. Egestas congue quisque egestas diam in. Risus pretium quam vulputate dignissim. Arcu cursus vitae congue mauris rhoncus aenean vel elit. Tincidunt nunc pulvinar sapien et ligula. Pharetra pharetra massa massa ultricies. Sed cras ornare arcu dui vivamus. Neque viverra justo nec ultrices dui.</p>
+      </div>
+      <div class="paragraphs">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquet enim tortor at auctor urna nunc. Sed nisi lacus sed viverra tellus in hac habitasse platea. Velit scelerisque in dictum non consectetur a erat nam at. Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Egestas quis ipsum suspendisse ultrices gravida dictum. Netus et malesuada fames ac turpis egestas sed tempus urna. Sit amet justo donec enim. Ultrices dui sapien eget mi. Vestibulum mattis ullamcorper velit sed ullamcorper morbi. Feugiat sed lectus vestibulum mattis ullamcorper velit. Lectus nulla at volutpat diam ut venenatis. Purus gravida quis blandit turpis cursus in hac habitasse platea. Morbi blandit cursus risus at ultrices mi tempus imperdiet. Nisl purus in mollis nunc sed. Tellus mauris a diam maecenas sed. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis.
+
+Nisi scelerisque eu ultrices vitae auctor eu augue. Vitae ultricies leo integer malesuada nunc vel risus. Cursus risus at ultrices mi tempus imperdiet nulla malesuada. Tellus in metus vulputate eu scelerisque felis imperdiet proin. Pretium aenean pharetra magna ac. Diam ut venenatis tellus in. Tincidunt praesent semper feugiat nibh sed. Nam libero justo laoreet sit amet cursus sit. Duis at tellus at urna condimentum mattis. Eget nunc scelerisque viverra mauris. In vitae turpis massa sed elementum tempus egestas sed. Volutpat lacus laoreet non curabitur gravida arcu ac. Mattis molestie a iaculis at erat. Sollicitudin ac orci phasellus egestas tellus rutrum tellus pellentesque.</p>
+      </div>
+      <div class="paragraphs">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus et. Eleifend mi in nulla posuere. Turpis massa sed elementum tempus egestas sed sed risus pretium. Donec pretium vulputate sapien nec sagittis aliquam malesuada bibendum. Interdum consectetur libero id faucibus nisl tincidunt. Amet nisl purus in mollis nunc sed id semper. Arcu felis bibendum ut tristique. Libero nunc consequat interdum varius. Lacus viverra vitae congue eu consequat. Mauris sit amet massa vitae tortor. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Pellentesque id nibh tortor id aliquet lectus proin nibh. Volutpat lacus laoreet non curabitur gravida arcu ac. In mollis nunc sed id semper. Commodo quis imperdiet massa tincidunt nunc pulvinar sapien et ligula.
+
+In hendrerit gravida rutrum quisque non. Elit duis tristique sollicitudin nibh sit. Sodales ut etiam sit amet nisl purus in. Quam id leo in vitae turpis massa sed. Tempus iaculis urna id volutpat lacus laoreet non curabitur. Gravida quis blandit turpis cursus in hac. Mattis enim ut tellus elementum sagittis vitae. Vitae congue mauris rhoncus aenean vel elit scelerisque mauris pellentesque. Magna sit amet purus gravida. Eget mauris pharetra et ultrices neque. Eleifend quam adipiscing vitae proin sagittis nisl rhoncus mattis rhoncus. Arcu bibendum at varius vel. Malesuada pellentesque elit eget gravida cum sociis natoque penatibus. Potenti nullam ac tortor vitae purus faucibus. Id semper risus in hendrerit gravida. Facilisi morbi tempus iaculis urna id volutpat lacus. Condimentum id venenatis a condimentum vitae sapien pellentesque habitant. Fermentum et sollicitudin ac orci phasellus egestas.</p>
+      </div>
+    </div>
+  </div>
+  <div id="im1">
+    <img src="./images/applications-of-computer-programming.jpg" height=175px width=250px />
+  <div>
+  <div id="im2">
+    <img src="./images/source-4280758_1920.jpg" height=175px width=250px />
+  </div>
+</div>
+</body>
+
 </html>
