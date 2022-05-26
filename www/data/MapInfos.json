@@ -7,7 +7,7 @@ null,
 {"id":5,"expanded":true,"name":"forestpass","order":5,"parentId":4,"scrollX":1205,"scrollY":1922},
 {"id":6,"expanded":true,"name":"Atown","order":6,"parentId":5,"scrollX":811,"scrollY":2171},
 {"id":7,"expanded":false,"name":"pog merchant","order":7,"parentId":6,"scrollX":819,"scrollY":461},
-{"id":8,"expanded":false,"name":"Init","order":9,"parentId":0,"scrollX":819,"scrollY":461},
+{"id":8,"expanded":false,"name":"Init","order":9,"parentId":0,"scrollX":832,"scrollY":640},
 {"id":9,"expanded":false,"name":"debugroom","order":10,"parentId":0,"scrollX":819,"scrollY":461},
 {"id":10,"expanded":false,"name":"Arcade","order":8,"parentId":6,"scrollX":811,"scrollY":461}
 ]
