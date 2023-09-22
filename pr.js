@@ -10,9 +10,9 @@ const money = () => {
     }
     return stuff
 }
-var dollar = money()
+var bank = money()
 
-dollar.paycheck(134)
-dollar.paycheck(543)
-dollar.paycheck(345)
-console.log(dollar.amount)
+bank.paycheck(134)
+bank.paycheck(543)
+bank.paycheck(345)
+console.log(bank.amount)
