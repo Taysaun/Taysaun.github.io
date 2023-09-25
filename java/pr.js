@@ -16,3 +16,5 @@ bank.paycheck(134)
 bank.paycheck(543)
 bank.paycheck(345)
 console.log(bank.amount)
+
+
