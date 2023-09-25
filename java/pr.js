@@ -1,5 +1,3 @@
-let num = 5
-console.log(num)
 
 const money = () => {
     var stuff = {
@@ -15,6 +13,7 @@ var bank = money()
 bank.paycheck(134)
 bank.paycheck(543)
 bank.paycheck(345)
-console.log(bank.amount)
+bank.paycheck(inputMoney)
 
-
+var inputMoney = document.getElementById("inputMoney").
+document.getElementById("amountBox").innerHTML = bank.amount
