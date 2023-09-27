@@ -1,19 +1,25 @@
-
 const money = () => {
     var stuff = {
         amount: 10,
-        paycheck: function(pay){
+        paycheck: function (pay) {
             this.amount = pay + this.amount
         },
     }
     return stuff
 }
 var bank = money()
+const addMoney = () => {
+    var payAmount = Number(document.getElementById('payAmount').value)
+    payLog.push(payAmount)
+    console.log(payLog)
+};
 
-bank.paycheck(134)
-bank.paycheck(543)
-bank.paycheck(345)
-bank.paycheck(inputMoney)
+var payLog = [134, 543, 345]
+for (i = 0; i < payLog.length; i++) {
+    bank.paycheck(payLog[i])
+}
 
-var inputMoney = document.getElementById("inputMoney").
+
 document.getElementById("amountBox").innerHTML = bank.amount
+
+
