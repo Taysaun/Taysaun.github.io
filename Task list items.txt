@@ -1,0 +1,3 @@
+662 - Explain how to create new objects from classes.
+665 - Explain class inheritance and how classes can rceive mtohods and properties from other calsses.
+667 - Demonstrate creating and utilizing your owncustom module/library.
