@@ -4,14 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaBank</title>
+    <link href="design.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div id="input">
-            <input type="value" placeholder="submit paycheck" id="payAmount">
-            <button onclick="addMoney()">Submit</button>
-    </div>
     <div id="amountBox">
     </div>
+    <div id="deposits">
+        <div class="input">
+            <input type="value" placeholder="submit paycheck" id="payAmount">
+            <button onclick="addMoney()">Submit</button>
+        </div>
+        <button onclick="lastDeposit()">See last deposit</button>
+        <div id="lastDeposit">
+        </div>
+        <button onclick="depositLog()">Deposit Log</button>
+        <div id="depositLog"></div>
+    </div>
+    <!--<div id="Expenses">
+        <div class="input">
+            <input type="value" placeholder="submit expense" id="expenseAmount">
+            <buttton onclick="deduct()">Submit</buttton>
+        </div>
+    </div> -->
     <script src="pr.js"></script>
 </body>
 </html>
