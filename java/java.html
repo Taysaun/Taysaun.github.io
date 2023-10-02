@@ -20,12 +20,16 @@
         <button onclick="depositLog()">Deposit Log</button>
         <div id="depositLog"></div>
     </div>
-    <!--<div id="Expenses">
+    <div id="Expenses">
         <div class="input">
             <input type="value" placeholder="submit expense" id="expenseAmount">
-            <buttton onclick="deduct()">Submit</buttton>
+            <input type="text" placeholder="description" maxlength=30 id="description">
+            <button onclick="newExpense()">Submit</button>
+            <button onclick="undo()">Undo</button>
         </div>
-    </div> -->
+        <button onclick="expenseLog()">Expense Log</button>
+        <div id="expenseLog"></div>
+    </div>
     <script src="pr.js"></script>
 </body>
 </html>
