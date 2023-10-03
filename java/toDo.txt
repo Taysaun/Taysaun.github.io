@@ -1,5 +1,3 @@
-Make a deduction field for expenses
-    submit expenses to deduct from balance
-    expenses do not change the balance unless applied
-    add an expense name with a maxlength of 30
+
+
 

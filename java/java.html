@@ -12,23 +12,26 @@
     <div id="deposits">
         <div class="input">
             <input type="value" placeholder="submit paycheck" id="payAmount">
-            <button onclick="addMoney()">Submit</button>
+            <button onclick="addMoney(); depositLog()">Submit</button>
         </div>
         <button onclick="lastDeposit()">See last deposit</button>
         <div id="lastDeposit">
         </div>
-        <button onclick="depositLog()">Deposit Log</button>
+        <div class="name" id="nameDep">Deposit Log:</div>
         <div id="depositLog"></div>
     </div>
     <div id="Expenses">
+        <p>To remove, input an existing description and click the <b>Remove</b> button</p>
         <div class="input">
             <input type="value" placeholder="submit expense" id="expenseAmount">
             <input type="text" placeholder="description" maxlength=30 id="description">
-            <button onclick="newExpense()">Submit</button>
-            <button onclick="undo()">Undo</button>
+            <button onclick="newExpense(); expenseLog()">Submit</button>
+            <button onclick="removeItem(); expenseLog()">Remove</button>
+            <button onclick="applyOne(); removeItem(); expenseLog()">Apply</button>
         </div>
-        <button onclick="expenseLog()">Expense Log</button>
+        <div class="name" id="nameExp">Expense Log:</div>
         <div id="expenseLog"></div>
+        <button onclick="applyAll(); expenseLog()">Apply All to Balance</button>
     </div>
     <script src="pr.js"></script>
 </body>
