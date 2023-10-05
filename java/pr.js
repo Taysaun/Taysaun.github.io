@@ -14,6 +14,7 @@ var bank = {
 }
 //Adds money to the amount in the bank object
 //This code is ran when the submit button is clicked
+const amountBox = document.getElementById('amountBox')
 const addMoney = () => {
     var payAmount = Number(document.getElementById('payAmount').value)
     if (payAmount){
@@ -21,15 +22,14 @@ const addMoney = () => {
         for (i = bank.payLog.length - 1; i < bank.payLog.length; i++) {
             bank.deposit(bank.payLog[i])
         }
-        document.getElementById("amountBox").innerHTML = bank.amount
+        amountBox.innerHTML = bank.amount
         document.getElementById('payAmount').value = ''
     } else {
-        document.getElementById('amountBox').innerHTML = 'INVALID'
+        amountBox.innerHTML = 'INVALID'
     };
 };
 //Prints the last deposit submitted to the page
 const lastDeposit = () => {
-    document.getElementById('lastDeposit').innerHTML = bank.payLog[bank.payLog.length - 1]
     return bank.payLog[bank.payLog.length - 1]
 }
 //Prints the entire log of deposits to the page
@@ -79,10 +79,10 @@ const removeItem = () => {
 const applyAll = () => {
     if (expenseLog() <= bank.amount){
         bank.amount -= expenseLog()
-        document.getElementById('amountBox').innerHTML = bank.amount
+        amountBox.innerHTML = bank.amount
         bank.expense = {}
-    } else {
-        document.getElementById('amountBox').innerHTML = 'Insufficient Funds'
+    } else if (expenseLog() > bank.amount) {
+        amountBox.innerHTML = 'Insufficient Funds'
     }
 }
 
@@ -90,10 +90,17 @@ const applyOne = () => {
     var des = document.getElementById('description').value
     if (bank.expense[des] <= bank.amount){
         bank.amount -= bank.expense[des]
-        document.getElementById('amountBox').innerHTML = bank.amount
+        amountBox.innerHTML = bank.amount
     }
 }
 
+const undo = () => {
+    if (bank.payLog.length){
+        bank.amount -= lastDeposit()
+        bank.payLog.pop()
+    }
+    amountBox.innerHTML = bank.amount
+}
 
 
 
