@@ -95,7 +95,10 @@ const applyOne = () => {
 }
 
 const undo = () => {
-    if (bank.payLog.length){
+    var paySum = bank.payLog[bank.payLog.length - 1]
+    if (paySum > bank.amount){
+        amountBox.innerHTML = 'Funds have been used'
+    } else if (bank.payLog.length){
         bank.amount -= lastDeposit()
         bank.payLog.pop()
     }
