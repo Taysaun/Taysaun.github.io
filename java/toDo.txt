@@ -1,4 +1,3 @@
-fix the bug where the balance will go negative
-if you undo a deposit that's larger than the current balance
+
 
 

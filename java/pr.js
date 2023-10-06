@@ -19,9 +19,7 @@ const addMoney = () => {
     var payAmount = Number(document.getElementById('payAmount').value)
     if (payAmount){
         bank.payLog.push(payAmount)
-        for (i = bank.payLog.length - 1; i < bank.payLog.length; i++) {
-            bank.deposit(bank.payLog[i])
-        }
+        bank.deposit(bank.payLog[bank.payLog.length - 1])
         amountBox.innerHTML = bank.amount
         document.getElementById('payAmount').value = ''
     } else {
@@ -85,7 +83,7 @@ const applyAll = () => {
         amountBox.innerHTML = 'Insufficient Funds'
     }
 }
-
+//applies only one expense from an existing description
 const applyOne = () => {
     var des = document.getElementById('description').value
     if (bank.expense[des] <= bank.amount){
@@ -93,16 +91,16 @@ const applyOne = () => {
         amountBox.innerHTML = bank.amount
     }
 }
-
+//Can undo an accidental deposit
 const undo = () => {
-    var paySum = bank.payLog[bank.payLog.length - 1]
-    if (paySum > bank.amount){
+    var lastPay = bank.payLog[bank.payLog.length - 1]
+    if (lastPay > bank.amount){
         amountBox.innerHTML = 'Funds have been used'
     } else if (bank.payLog.length){
         bank.amount -= lastDeposit()
         bank.payLog.pop()
+        amountBox.innerHTML = bank.amount
     }
-    amountBox.innerHTML = bank.amount
 }
 
 
