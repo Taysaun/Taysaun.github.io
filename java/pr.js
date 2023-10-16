@@ -1,5 +1,4 @@
 //Sets object that has an amount and methods to change the amount
-
 var bank = {
     amount: 0,
     //Adds money to the amount property
