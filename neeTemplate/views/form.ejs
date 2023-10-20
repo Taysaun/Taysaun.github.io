@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<body>
+    <h2> 
+        <%- phrase %> 
+    </h2>
+        <% if (locals.imgToDisplay) { %>
+            <img src="<%- imgToDisplay %>">
+        <% } %>
+    <form action="/submit" method="post">
+        <input type="text" name="uesrName" id="userInput">
+        <input type="checkbox" name="userCheck" id="checkBox">
+        <input type="submit" value="Clik meh 2 submoot">
+    </form>
+</body>
+</html>
