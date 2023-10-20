@@ -1,3 +1,6 @@
+const fs = require('fs')
+const data = fs.readFileSync('moneyData.json')
+data = JSON.parse(data)
 //Sets object that has an amount and methods to change the amount
 var bank = {
     amount: 0,
@@ -20,6 +23,7 @@ const addMoney = () => {
         bank.payLog.push(payAmount)
         bank.deposit(bank.payLog[bank.payLog.length - 1])
         amountBox.innerHTML = bank.amount
+        data.amount.push(bank.amount)
         document.getElementById('payAmount').value = ''
     } else {
         amountBox.innerHTML = 'INVALID'
