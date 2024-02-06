@@ -1,0 +1,21 @@
+body {
+    text-align: center;
+
+}
+#cont {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-decoration-color: white;
+    width: 300px;
+
+    margin: 50px auto;
+}
+
+.btn {
+    font-size: 2rem;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    background-color: black;
+    border-color: white;
+}
