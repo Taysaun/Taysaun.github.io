@@ -2,40 +2,6 @@ const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
-// const express = require("express")
-// const app = express()
-// const io = require("socket.io")(3000)
-// const http = require("http").Server(app)
-
-// //start http server
-// // http.listen(3000, () => {
-// //     console.log("server running on port 3000")
-// // })
-
-
-// app.use(express.static("public"))
-
-// io.on("connection", (socket) => {
-//     console.log("new user connected")
-//     socket.emit("message", "Welcome to the chat")
-//     socket.broadcast.emit("message", "A new user has joined the chat")
-    
-//     socket.on("sendMessage", (message) => {
-//         io.emit("message", message)
-//     })
-    
-//     socket.on("disconnect", () => {
-//         io.emit("message", "A user has left the chat")
-//     })
-// })
-
-// app.set("view engine", "ejs")
-
-// app.get("/", (req, res) => {
-//     res.render("index")
-// })
-
-
 
 app.use(express.static("public"));
 
