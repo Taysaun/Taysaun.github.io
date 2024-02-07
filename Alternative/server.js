@@ -41,13 +41,16 @@ app.use(express.static("public"));
 
 var players = [];
 var values = [];
+var ids = [];
 
 io.on("connection", (socket) => {
     console.log("new user connected");
     socket.emit("message", "Welcome to the chat");
     socket.broadcast.emit("message", "A new user has joined the chat");
-
+    
     socket.on("newPlayer", (player) => {
+        ids.push(socket.id);
+        console.log(ids);
         players.push(player)
         if (players.length === 2) {
             io.emit("enough")
@@ -55,16 +58,24 @@ io.on("connection", (socket) => {
         }
     });
 
+
+
     socket.on("finish", (value) => {
         values.push(value);
         if (values.length === 2) {
             io.emit("compare")
             if (values[0] < values[1]) {
-                io.emit("winner", "You win!")
+                io.to(ids[0]).emit("winner", "You Win!")
             } else {
-                io.emit("loser", "You Lose!")
+                io.to(ids[0]).emit("winner", "You Lose!")
+            }
+            if (values[0] > values[1]){
+                io.to(ids[1]).emit("winner", "You Win!")
+            } else {
+                io.to(ids[1]).emit("winner", "You Lose!")
             }
             values = [];
+            ids = [];
         }
     });
 });

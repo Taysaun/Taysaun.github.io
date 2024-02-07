@@ -3,7 +3,7 @@
         //listen for the message
         // import { io } from "../socket.io-client";
         
-        const socket = io("http://localhost:3000");
+        const socket = io("http://172.16.3.142:3000");
 
 
         var BACKSTYLE = document.body.style;
@@ -11,6 +11,10 @@
         document.getElementById("search").style.display = "none";
 
         BACKSTYLE.backgroundColor = "";
+
+        socket.on("connect", () => {
+            console.log(socket.id);
+        });
 
         document.getElementById("submit").addEventListener("click", function() {
             socket.emit("newPlayer", document.getElementById("name").value);
@@ -26,10 +30,10 @@
                             return;
                         }
                         var timer;
-                        var hour = 0o0; 
-                        var minute = 0o0; 
-                        var second = 0o0; 
-                        var count = 0o0; 
+                        var hour = 0; 
+                        var minute = 0; 
+                        var second = 0; 
+                        var count = 0; 
                         var hrString;
                         var minString;
                         var secString;
@@ -61,19 +65,19 @@
                                 countString = count; 
                         
                                 if (hour < 10) { 
-                                    hrString = "0" + hrString; 
+                                    hrString = 0 + hrString; 
                                 } 
                         
                                 if (minute < 10) { 
-                                    minString = "0" + minString; 
+                                    minString = 0 + minString; 
                                 } 
                         
                                 if (second < 10) { 
-                                    secString = "0" + secString; 
+                                    secString = 0 + secString; 
                                 } 
                         
                                 if (count < 10) { 
-                                    countString = "0" + countString; 
+                                    countString = 0 + countString; 
                                 } 
                         
                                 document.getElementById('hr').innerHTML = hrString; 
@@ -82,33 +86,21 @@
                                 document.getElementById('count').innerHTML = countString; 
                                 setTimeout(stopWatch, 10); 
                             } 
-                    }; 
-                    document.body.addEventListener('click', function () { 
-                        timer = false; 
-                        var stopValue = countString + secString*100 + minString*100*60 + hrString*100*60*60;
-                        console.log(stopValue)
-                        socket.emit("finish", stopValue);
+                    };
+                    document.body.addEventListener('click', function () {
+                        if (BACKSTYLE.backgroundColor === "") {
+                            timer = false; 
+                            var stopValue = countString + secString*100 + minString*100*60 + hrString*100*60*60;
+                            console.log(stopValue)
+                            socket.emit("finish", stopValue);
+                        }
+
                     }); 
                     setTimeout(()=>{
                         changeColor();
                         stopWatch(); 
                         }, (Math.random() * 6000) + 4000);
                     }
-                    // start a stopwatch
-                    
-                        
-                        // resetBtn.addEventListener('click', function () { 
-                        //     timer = false; 
-                        //     hour = 0; 
-                        //     minute = 0; 
-                        //     second = 0; 
-                        //     count = 0; 
-                        //     document.getElementById('hr').innerHTML = "00"; 
-                        //     document.getElementById('min').innerHTML = "00"; 
-                        //     document.getElementById('sec').innerHTML = "00"; 
-                        //     document.getElementById('count').innerHTML = "00"; 
-                        // }); 
-                    
                 
                 }
                 );
@@ -121,8 +113,8 @@
             socket.on("winner", (message) => {
                 document.getElementById("winmess").innerHTML = message;
             });
-            socket.on("loser", (message) => {
-                document.getElementById("losemess").innerHTML = message;
-            });
+            // socket.on("player2", (message) => {
+            //     document.getElementById("losemess").innerHTML = message;
+            // });
 
         
