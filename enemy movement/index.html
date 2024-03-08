@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="can" width="800" height="600" style="border: 1px solid black"></canvas>
+    <script>
+        var canvas = document.getElementById("can")
+        var c = canvas.getContext("2d")
+        var playX = 100
+        var playY = 100
+        var playW = 25
+        var playH = 25
+        var enX = 300
+        var enY = 300
+        c.clearRect(0, 0, canvas.width, canvas.height)
+        function player(){
+            if(keys["w"] || keys["ArrowUp"]){
+                playY -= 3
+            }
+            if(keys["a"] || keys["ArrowLeft"]){
+                playX -= 3
+            }
+            if(keys["s"] || keys["ArrowDown"]){
+                playY += 3
+            }
+            if(keys["d"] || keys["ArrowRight"]){
+                playX += 3
+            }
+            c.fillStyle = "red"
+            c.fillRect(playX, playY, playW, playH)
+        }
+        const enemy = (x,y,w,h) => {
+            this.x = x
+            this.y = y
+            this.w = w
+            this.h = h
+            var color = "blue"
+            c.fillStyle = color
+            c.fillRect(x, y, w, h)
+            // while(enX < playX || enY < playY){
+            //     enX += 1
+            //     enY += 1
+            // }
+            // while(enX > playX || enY > playY){
+            //     enX -= 1
+            //     enY -= 1
+            // }
+            var path = sq
+        }
+        // enemy(enX, enY, 25, 25)
+        //wasd key down event handlers
+        var keys = {"w": false, "a": false, "s": false, "d": false, "ArrowUp": false, "ArrowLeft": false, "ArrowDown": false, "ArrowRight": false}
+        window.addEventListener("keydown", function(e){
+            keys[e.key] = true
+        })
+        window.addEventListener("keyup", function(e){
+            keys[e.key] = false
+        })
+        // requestAnimationFrame(player)
+        // requestAnimationFrame(enemy)
+        function gameLoop(){
+            c.clearRect(0, 0, canvas.width, canvas.height)
+            // requestAnimationFrame(player)
+            // requestAnimationFrame(enemy)
+            player()
+            enemy(enX, enY, 25, 25) 
+            requestAnimationFrame(gameLoop)
+        }
+        gameLoop()
+        // requestAnimationFrame(player.enemy(300, 300, 25, 25))
+        // new player.Enemy(300, 300, 25, 25).animate()
+        console.log()
+    </script>
+</body>
+</html>
