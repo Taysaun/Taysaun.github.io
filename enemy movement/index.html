@@ -16,19 +16,24 @@
         var playH = 25
         var enX = 300
         var enY = 300
+        var SPEED = 6
         c.clearRect(0, 0, canvas.width, canvas.height)
         function player(){
             if(keys["w"] || keys["ArrowUp"]){
-                playY -= 3
+                playY -= SPEED
+                console.log(playY, playX)
             }
             if(keys["a"] || keys["ArrowLeft"]){
-                playX -= 3
+                playX -= SPEED
+                console.log(playY, playX)
             }
             if(keys["s"] || keys["ArrowDown"]){
-                playY += 3
+                playY += SPEED
+                console.log(playY, playX)
             }
             if(keys["d"] || keys["ArrowRight"]){
-                playX += 3
+                playX += SPEED
+                console.log(playY, playX)
             }
             c.fillStyle = "red"
             c.fillRect(playX, playY, playW, playH)
@@ -38,18 +43,55 @@
             this.y = y
             this.w = w
             this.h = h
+            var ENSPEED = 4
             var color = "blue"
             c.fillStyle = color
             c.fillRect(x, y, w, h)
-            // while(enX < playX || enY < playY){
-            //     enX += 1
-            //     enY += 1
+                // if (playX < enX && playY < enY){
+                //     enX -= ENSPEED
+                //     enY -= ENSPEED
+                // }
+                // if (playX > enX && playY > enY){
+                //     enX += ENSPEED
+                //     enY += ENSPEED
+                // }
+                // if (playX > enX && playY < enY){
+                //     enX += ENSPEED
+                //     enY -= ENSPEED
+                // }
+                // if (playX < enX && playY > enY){
+                //     enX -= ENSPEED
+                //     enY += ENSPEED
+                // }
+                // if (playX == enX){
+                //     if (playY > enY){
+                //         enY += ENSPEED
+                //     } else {
+                //         enY -= ENSPEED
+                //     }
+                // }
+                // if (playY == enY){
+                //     if (playX > enX){
+                //         enY += ENSPEED
+                //     } else {
+                //         enY -= ENSPEED
+                //     }
+                // }
+             xPath = playX - enX
+             yPath = playY - enY
+            // if (xPath){
+            //     if (xPath < 0){
+            //         enX -= ENSPEED
+            //     } else if (xPath > 0){
+            //         enX += ENSPEED
+            //     } else {
+            //         enX = 0
+            //     }
             // }
-            // while(enX > playX || enY > playY){
-            //     enX -= 1
-            //     enY -= 1
-            // }
-            var path = sq
+            var path = Math.sqrt(xPath**2 + yPath**2)
+            enX += xPath/path * ENSPEED
+            enY += yPath/path * ENSPEED
+
         }
         // enemy(enX, enY, 25, 25)
         //wasd key down event handlers
