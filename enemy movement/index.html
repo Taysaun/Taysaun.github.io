@@ -47,54 +47,12 @@
             var color = "blue"
             c.fillStyle = color
             c.fillRect(x, y, w, h)
-                // if (playX < enX && playY < enY){
-                //     enX -= ENSPEED
-                //     enY -= ENSPEED
-                // }
-                // if (playX > enX && playY > enY){
-                //     enX += ENSPEED
-                //     enY += ENSPEED
-                // }
-                // if (playX > enX && playY < enY){
-                //     enX += ENSPEED
-                //     enY -= ENSPEED
-                // }
-                // if (playX < enX && playY > enY){
-                //     enX -= ENSPEED
-                //     enY += ENSPEED
-                // }
-                // if (playX == enX){
-                //     if (playY > enY){
-                //         enY += ENSPEED
-                //     } else {
-                //         enY -= ENSPEED
-                //     }
-                // }
-                // if (playY == enY){
-                //     if (playX > enX){
-                //         enY += ENSPEED
-                //     } else {
-                //         enY -= ENSPEED
-                //     }
-                // }
-             xPath = playX - enX
-             yPath = playY - enY
-            // if (xPath){
-            //     if (xPath < 0){
-            //         enX -= ENSPEED
-            //     } else if (xPath > 0){
-            //         enX += ENSPEED
-            //     } else {
-            //         enX = 0
-            //     }
-            // }
+            xPath = playX - enX
+            yPath = playY - enY
             var path = Math.sqrt(xPath**2 + yPath**2)
             enX += xPath/path * ENSPEED
             enY += yPath/path * ENSPEED
-
         }
-        // enemy(enX, enY, 25, 25)
-        //wasd key down event handlers
         var keys = {"w": false, "a": false, "s": false, "d": false, "ArrowUp": false, "ArrowLeft": false, "ArrowDown": false, "ArrowRight": false}
         window.addEventListener("keydown", function(e){
             keys[e.key] = true
@@ -102,20 +60,16 @@
         window.addEventListener("keyup", function(e){
             keys[e.key] = false
         })
-        // requestAnimationFrame(player)
-        // requestAnimationFrame(enemy)
+        function enemies(){
+            enemy(enX, enY, 25, 25) 
+        }
         function gameLoop(){
             c.clearRect(0, 0, canvas.width, canvas.height)
-            // requestAnimationFrame(player)
-            // requestAnimationFrame(enemy)
             player()
-            enemy(enX, enY, 25, 25) 
+            enemies()
             requestAnimationFrame(gameLoop)
         }
         gameLoop()
-        // requestAnimationFrame(player.enemy(300, 300, 25, 25))
-        // new player.Enemy(300, 300, 25, 25).animate()
-        console.log()
     </script>
 </body>
 </html>
