@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weether</title>
+    <style>
+        #forcastBox {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 100px;
+            text-align: center;
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        .dayBox {
+            margin: 10px 0;
+            border: 1px solid #000;
+            padding: 10px;
+            background-color: aquamarine;
+        }
+
+        div {
+            margin: 10px 0;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <input type="text" id="show" placeholder="Enter a show name" name="textfield">
+        <input type="submit" value="Search" name="submitButton">
+    </form>
+    <div id="forcastBox">
+        <h1>Shows</h1>
+    </div>
+</body>
+<script>
+    // make an xmlhttp request to https://api.weather.gov/gridpoints/CTP/115,23/forecast
+    // get the response and parse it
+    // display the response in the console
+    var show; 
+    document.addEventListener('submit', function(){
+        show = document.forms[0].textfield.value;
+        console.log(show);
+    })
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', `http://api.tvmaze.com/search/shows?q=${show}`, true);
+    xhr.send();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            for (var i = 0; i < response.length; i++) {
+                var element = document.createElement('div');
+                var show = response[i].show;
+                var content = show.name + "<br>" + show.language + "<br>" + show.genres + "<br>" + show.rating.average + "<br>" + show.network.name + "<br>" + show.summary + "<br>";
+                element.innerHTML = content;
+                document.getElementById('forcastBox').appendChild(element)
+            }
+                // for (var i = 0; i < response.length; i++) {
+                //     var show = response[i].show;
+                //     document.write(show.name + "<br>");
+                //     document.write(show.language + "<br>");
+                //     document.write(show.genres + "<br>");
+                //     document.write(show.rating.average + "<br>");
+                //     document.write(show.network.name + "<br>");
+                //     document.write(show.summary);
+                //     document.write('-------------------');
+                // }
+        }
+    }
+</script>
+</html>

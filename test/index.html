@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="can" width="800" height="600" style="border: 1px solid black"></canvas>
+    <script>
+        var canvas = document.getElementById("can")
+        var c = canvas.getContext("2d")
+        var playX = 100
+        var playY = 100
+        var playW = 25
+        var playH = 25
+        // var enX = 300
+        // var enY = 300
+        var SPEED = 6
+        // c.clearRect(0, 0, canvas.width, canvas.height)
+        function player(){
+            if(keys["w"] || keys["ArrowUp"]){
+                playY -= SPEED
+                console.log(playY, playX)
+            }
+            if(keys["a"] || keys["ArrowLeft"]){
+                playX -= SPEED
+                console.log(playY, playX)
+            }
+            if(keys["s"] || keys["ArrowDown"]){
+                playY += SPEED
+                console.log(playY, playX)
+            }
+            if(keys["d"] || keys["ArrowRight"]){
+                playX += SPEED
+                console.log(playY, playX)
+            }
+            c.fillStyle = "red"
+            c.fillRect(playX, playY, playW, playH)
+        }
+        var xPath;
+        var yPath;
+        var ENSPEED;
+        // const enemy = (x,y,w,h) => {
+        //     var enX = x
+        //     var enY = y
+        //     // this.w = w
+        //     // this.h = h
+        //     var color = "blue"
+        //     c.fillStyle = "blue"
+        //     c.fillRect(enX, enY, w, h)
+        //     xPath = playX - enX
+        //     yPath = playY - enY
+        //     ENSPEED = 4
+        //     var path = Math.sqrt(xPath**2 + yPath**2)
+        //     enX += xPath/path * ENSPEED
+        //     enY += yPath/path * ENSPEED
+        // }
+        class Enemy {
+            constructor(x, y, w, h){
+                this.x = x
+                this.y = y
+                this.w = w
+                this.h = h
+                c.fillStyle = "blue"
+                c.fillRect(this.x, this.y, w, h)
+                xPath = playX - this.x
+                yPath = playY - this.y
+                ENSPEED = 4
+                var path = Math.sqrt(xPath**2 + yPath**2)
+                this.x += xPath/path * ENSPEED
+                this.y += yPath/path * ENSPEED
+            }
+        }
+
+        var keys = {"w": false, "a": false, "s": false, "d": false, "ArrowUp": false, "ArrowLeft": false, "ArrowDown": false, "ArrowRight": false}
+        window.addEventListener("keydown", function(e){
+            keys[e.key] = true
+        })
+        window.addEventListener("keyup", function(e){
+            keys[e.key] = false
+        })
+        function gameLoop(){
+            c.clearRect(0, 0, canvas.width, canvas.height)
+            player()
+            new Enemy(190, 270, 25, 25) 
+            requestAnimationFrame(gameLoop)
+        }
+        gameLoop()
+    </script>
+</body>
+</html>

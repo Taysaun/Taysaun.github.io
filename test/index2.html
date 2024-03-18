@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="can" width="1000" height="800"></canvas>
+    <script>
+        var canvas = document.getElementById("can")
+        var c = canvas.getContext("2d")
+        var keys = {"w": false, "a": false, "s": false, "d": false, "ArrowUp": false, "ArrowLeft": false, "ArrowDown": false, "ArrowRight": false}
+        window.addEventListener("keydown", function(e){
+            keys[e.key] = true
+        })
+        window.addEventListener("keyup", function(e){
+            keys[e.key] = false
+        })
+        var players = {}
+        class Creation {
+            constructor(x, y, w, h, speed){
+                this.x = x
+                this.y = y
+                this.w = w
+                this.h = h
+                this.speed = 6
+                c.fillStyle = "red";
+                c.fillRect(this.x, this.y, this.w, this.h)
+            }
+            
+            draw(){
+                if(keys["w"] || keys["ArrowUp"]){
+                    this.y -= this.speed
+                }
+                if(keys["a"] || keys["ArrowLeft"]){
+                    this.x -= this.speed
+                }
+                if(keys["s"] || keys["ArrowDown"]){
+                    this.y += this.speed
+                }
+                if(keys["d"] || keys["ArrowRight"]){
+                    this.x += this.speed
+                }
+            }
+        }
+        players[0] = new Creation(100, 100, 25, 25, 6)
+        function gameLoop(){
+            c.clearRect(0, 0, canvas.width, canvas.height)
+            players[0]
+            requestAnimationFrame(gameLoop)
+        }
+        console.log(players)
+        
+    </script>
+</body>
+</html>
