@@ -6,7 +6,7 @@
     <title>Home</title>
 </head>
 <body>
-    <form action="/" method="post">
+    <form action="/" method="get" id="form">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username">
         <input type="submit" value="SUBMIT" id="submit" disabled>
@@ -15,7 +15,7 @@
 <script>
     var username = document.getElementById('username')
     var submit = document.getElementById('submit')
-    console.log(submit.disabled)
+    var form = document.getElementById('form')
 
     var interval = () => {
         if (username.value) {
@@ -26,5 +26,10 @@
         requestAnimationFrame(interval)
     }
     interval()
+
+    submit.addEventListener('click', (e) => {
+        form.setAttribute('action', `chat?name=${username.value}`)
+        console.log(form)
+    })
 </script>
 </html>

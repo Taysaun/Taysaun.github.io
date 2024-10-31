@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Chat</h1>
+    <div id="userBox"></div>
+    <div id="chatBox"></div>
+    <input type="text" name="mychat" style="width: 90%;" id="text">
+    <input type="submit" value="Submit" id="button">
+</body>
+<script>
+    var currentUser = '<%- name %>'
+    var button = document.getElementById('button')
+    var text = document.getElementById('text')
+    var userBox = document.getElementById('userBox')
+    var socket = new WebSocket("http://localhost:3000")
+    var message = {
+        text: text.value,
+        name: currentUser
+    }
+    
+    button.addEventListener('click', () => {
+    
+        console.log(socket)
+    
+        socket.onopen = function(){
+            socket.send(JSON.stringify(message))
+        }
+
+        socket.onmessage = function(message){
+            console.log(message)
+            var data = JSON.parse(message.data)
+            console.log(data)
+            if (data.list) {
+                data.list.forEach(person => {
+                    userBox.innerHTML += person + '<br>'
+                });
+            }
+        }
+    })
+
+    
+</script>
+</html>

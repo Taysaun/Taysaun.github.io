@@ -1,8 +1,46 @@
 const { log } = require('console')
 const express = require('express')
+const webSocket = require('ws')
 const app = express()
+const http = require('http').Server(app)
 
 app.set('view engine', 'ejs')
+
+const wss = new webSocket.WebSocketServer({server: http})
+console.log(wss.clients)
+
+function broadcast(wss, message) {
+    wss.clients.forEach(client => {
+        client.send(message)
+    });
+}
+
+function userList(wss) {
+    var list = []
+    wss.clients.forEach(client => {
+        if (client.name) {
+            list.push(client.name)
+        }
+    })
+    return {list: list}
+}
+
+wss.on('connection', (ws) => {
+    ws.on('message', (message) => {
+        var message = JSON.parse(message)
+        if (message.text) {
+            broadcast(wss, JSON.stringify(message))
+        }
+        if (message.name) {
+            ws.name = message.name
+            broadcast(wss, JSON.stringify(userList(wss)))
+            console.log(wss.clients)
+        }
+    })
+    ws.on('close', () => {
+        broadcast(wss, JSON.stringify(userList(wss)))
+    })
+})
 
 app.use(express.urlencoded({extended: true}))
 
@@ -11,10 +49,14 @@ app.get('/', (req, res) => {
 })
 
 app.get('/chat', (req, res) => {
-
+    if (req.query.username) {
+        res.render('chat', {name: req.query.username})
+    } else {
+        res.redirect('/')
+    }
 })
 
-app.listen(3000, (err) => {
+http.listen(3000, (err) => {
     if(err) {
         log(err)
     } else {
