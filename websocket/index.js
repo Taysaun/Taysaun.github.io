@@ -11,7 +11,7 @@ console.log(wss.clients)
 
 function broadcast(wss, message) {
     wss.clients.forEach(client => {
-        client.send(message)
+        client.send(JSON.stringify(message))
     });
 }
 
@@ -29,16 +29,15 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         var message = JSON.parse(message)
         if (message.text) {
-            broadcast(wss, JSON.stringify(message))
+            broadcast(wss, message)
         }
         if (message.name) {
             ws.name = message.name
-            broadcast(wss, JSON.stringify(userList(wss)))
-            console.log(wss.clients)
+            broadcast(wss, userList(wss))
         }
     })
     ws.on('close', () => {
-        broadcast(wss, JSON.stringify(userList(wss)))
+        broadcast(wss, userList(wss))
     })
 })
 
