@@ -11,15 +11,42 @@
 
         body {
             margin: 0;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
-    <canvas style="height: 100vh; width: 100vw; border: 1px solid black; display: block"></canvas>
+    <canvas id="canvas" style="display: block"></canvas>
 </body>
 <script>
+    var canvas = document.getElementById('canvas')
+    var c = canvas.getContext('2d')
+    var body = document.querySelector('body')
+    var player = {
+        x: 0,
+        y: 0,
+        w: 10,
+        h: 30,
+        color: "blue"
+    }
+    
+    function resize() {
+        canvas.setAttribute('height', body.offsetHeight)
+        canvas.setAttribute('width', body.offsetWidth)
+    }
+    resize()
+
+    window.addEventListener('resize', () => {
+        resize()
+    })
+    
+    c.fillRect(player.x, player.y, player.w, player.h)
     window.addEventListener('mousemove', (e) => {
+        c.clearRect(player.x, player.y, player.w, player.h)
+        c.fillRect(e.clientX, e.clientY, 10, 10)
         console.log(e)
     })
+    console.log(c)
+
 </script>
 </html>
