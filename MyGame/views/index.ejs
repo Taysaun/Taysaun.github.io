@@ -25,28 +25,93 @@
     var player = {
         x: 0,
         y: 0,
-        w: 10,
-        h: 30,
+        w: 20,
+        h: 140,
+        xdirection: '',
+        ydirection: '',
+        speed: 0,
+        xSpeed: 0,
+        ySpeed: 0, 
         color: "blue"
     }
+
+    var ball = {
+        x: 100,
+        y: 100,
+        r: 12
+    }
+
+    
     
     function resize() {
         canvas.setAttribute('height', body.offsetHeight)
         canvas.setAttribute('width', body.offsetWidth)
     }
     resize()
-
+    
     window.addEventListener('resize', () => {
         resize()
     })
+
+    function makeBall() {
+        c.beginPath();
+        c.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI);
+        c.fillStyle = "red";
+        c.fill()
+        c.stroke();
+    }
+
+    var ballList = []
+    function ballMove() {
+        c.beginPath();
+        c.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI);
+        c.fillStyle = "red";
+        c.fill()
+        c.stroke();
+        requestAnimationFrame(ballMove)
+    }
+    ballMove()
     
-    c.fillRect(player.x, player.y, player.w, player.h)
+    function ballHit() {
+        if (player.xdirection == 'right') {
+            ball.x += player.xSpeed
+        } 
+        if (player.xdirection == 'left') {
+            ball.x -= player.xSpeed
+        }
+        if (player.ydirection == 'down') {
+            ball.y += player.ySpeed
+        } 
+        if (player.ydirection == 'up') {
+            ball.y -= player.ySpeed
+        }
+    }
+    
+    var eventlist = []
     window.addEventListener('mousemove', (e) => {
-        c.clearRect(player.x, player.y, player.w, player.h)
-        c.fillRect(e.clientX, e.clientY, 10, 10)
-        console.log(e)
+        eventlist.push(e)
+        if (eventlist.length > 2) {
+            eventlist.splice(0, eventlist.length - 2)
+        }
+        c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
+        c.fillRect(e.clientX, e.clientY, player.w, player.h)
+        if (e.clientX - eventlist[0].clientX >= 0) {
+            player.xdirection = 'right'
+        } else {
+            player.xdirection = 'left'
+        }
+
+        if (e.clientY - eventlist[0].clientY >= 0) {
+            player.ydirection = 'down'
+        } else {
+            player.ydirection = 'up'
+        }
+        player.xSpeed = Math.abs(e.clientX - eventlist[0].clientX)
+        player.ySpeed = Math.abs(e.clientY - eventlist[0].clientY)
+
+        player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
     })
-    console.log(c)
+
 
 </script>
 </html>
