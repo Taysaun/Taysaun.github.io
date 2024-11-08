@@ -61,18 +61,24 @@
         c.stroke();
     }
 
-    var ballList = []
     function ballMove() {
-        c.beginPath();
-        c.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI);
-        c.fillStyle = "red";
-        c.fill()
-        c.stroke();
-        requestAnimationFrame(ballMove)
-    }
-    ballMove()
-    
-    function ballHit() {
+        // c.beginPath();
+        // c.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI);
+        // if (player.xdirection == 'right') {
+        //     ball.x += player.xSpeed
+        // } 
+        // if (player.xdirection == 'left') {
+        //     ball.x -= player.xSpeed
+        // }
+        // if (player.ydirection == 'down') {
+        //     ball.y += player.ySpeed
+        // } 
+        // if (player.ydirection == 'up') {
+        //     ball.y -= player.ySpeed
+        // }
+        // c.fillStyle = "red";
+        // c.fill()
+        // c.stroke();
         if (player.xdirection == 'right') {
             ball.x += player.xSpeed
         } 
@@ -85,6 +91,13 @@
         if (player.ydirection == 'up') {
             ball.y -= player.ySpeed
         }
+        // c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
+        makeBall()
+        requestAnimationFrame(ballMove)
+    }
+    ballMove()
+    
+    function ballHit() {
     }
     
     var eventlist = []
@@ -93,7 +106,7 @@
         if (eventlist.length > 2) {
             eventlist.splice(0, eventlist.length - 2)
         }
-        c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
+        // c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
         c.fillRect(e.clientX, e.clientY, player.w, player.h)
         if (e.clientX - eventlist[0].clientX >= 0) {
             player.xdirection = 'right'
