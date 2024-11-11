@@ -36,11 +36,74 @@
     }
 
     var ball = {
-        x: 100,
-        y: 100,
-        r: 12
+        x: {
+            speed: 4,
+            position: 100
+        },
+        y: {
+            speed: 3,
+            position: 100
+        },
+        r: 12,
+        speed: 0
+            
     }
 
+    
+    var eventlist = []
+    window.addEventListener('mousemove', (e) => {
+        eventlist.push(e)
+        if (eventlist.length > 2) {
+            eventlist.splice(0, eventlist.length - 2)
+        }
+        // c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
+        player.x = e.clientX
+        player.y = e.clientY
+        if (e.clientX - eventlist[0].clientX >= 0) {
+            player.xdirection = 'right'
+        } else {
+            player.xdirection = 'left'
+        }
+        
+        if (e.clientY - eventlist[0].clientY >= 0) {
+            player.ydirection = 'down'
+        } else {
+            player.ydirection = 'up'
+        }
+        player.xSpeed = Math.abs(e.clientX - eventlist[0].clientX)
+        player.ySpeed = Math.abs(e.clientY - eventlist[0].clientY)
+        
+        player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
+    })
+    
+    let gameLoop = () => {
+        c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
+        c.fillRect(player.x, player.y, player.w, player.h)
+        makeBall()
+        ball.x.position += ball.x.speed
+        ball.y.position += ball.y.speed
+        ball.speed = Math.sqrt(ball.x.speed**2 + ball.y.speed**2)
+        //make the ball bounce off the top
+        if (ball.x.position + ball.r > body.offsetWidth || ball.x.position - ball.r < 0) {
+            //bounce away x
+            collision(ball.x)
+        }
+        if (ball.y.position + ball.r > body.offsetHeight || ball.y.position - ball.r < 0) {
+            //bounce away y
+            collision(ball.y)
+        }
+        if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+            if (ball.x.position + ball.r - 3 >= player.x && ball.x.position - ball.r <= player.x + player.w  -3) {
+                collision(ball.x)
+            }
+        }
+
+        if (ball.speed < player.speed) {
+            // ballHit()
+        }
+        requestAnimationFrame(gameLoop)
+    }
+    gameLoop()
     
     
     function resize() {
@@ -55,75 +118,33 @@
 
     function makeBall() {
         c.beginPath();
-        c.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI);
+        c.arc(ball.x.position, ball.y.position, ball.r, 0, 2*Math.PI);
         c.fillStyle = "red";
         c.fill()
         c.stroke();
     }
-
-    function ballMove() {
-        // c.beginPath();
-        // c.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI);
-        // if (player.xdirection == 'right') {
-        //     ball.x += player.xSpeed
-        // } 
-        // if (player.xdirection == 'left') {
-        //     ball.x -= player.xSpeed
-        // }
-        // if (player.ydirection == 'down') {
-        //     ball.y += player.ySpeed
-        // } 
-        // if (player.ydirection == 'up') {
-        //     ball.y -= player.ySpeed
-        // }
-        // c.fillStyle = "red";
-        // c.fill()
-        // c.stroke();
-        if (player.xdirection == 'right') {
-            ball.x += player.xSpeed
-        } 
-        if (player.xdirection == 'left') {
-            ball.x -= player.xSpeed
-        }
-        if (player.ydirection == 'down') {
-            ball.y += player.ySpeed
-        } 
-        if (player.ydirection == 'up') {
-            ball.y -= player.ySpeed
-        }
-        // c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
-        makeBall()
-        requestAnimationFrame(ballMove)
-    }
-    ballMove()
     
     function ballHit() {
+        if (player.xdirection == 'right') {
+            ball.x.position += player.xSpeed
+        } 
+        if (player.xdirection == 'left') {
+            ball.x.position -= player.xSpeed
+        }
+        if (player.ydirection == 'down') {
+            ball.y.position += player.ySpeed
+        } 
+        if (player.ydirection == 'up') {
+            ball.y.position -= player.ySpeed
+        }
+    }
+
+    function collision(ball) {
+        // when there is no extra force
+        // if the player is touching the ball
+        ball.speed = -ball.speed
     }
     
-    var eventlist = []
-    window.addEventListener('mousemove', (e) => {
-        eventlist.push(e)
-        if (eventlist.length > 2) {
-            eventlist.splice(0, eventlist.length - 2)
-        }
-        // c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
-        c.fillRect(e.clientX, e.clientY, player.w, player.h)
-        if (e.clientX - eventlist[0].clientX >= 0) {
-            player.xdirection = 'right'
-        } else {
-            player.xdirection = 'left'
-        }
-
-        if (e.clientY - eventlist[0].clientY >= 0) {
-            player.ydirection = 'down'
-        } else {
-            player.ydirection = 'up'
-        }
-        player.xSpeed = Math.abs(e.clientX - eventlist[0].clientX)
-        player.ySpeed = Math.abs(e.clientY - eventlist[0].clientY)
-
-        player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
-    })
 
 
 </script>
