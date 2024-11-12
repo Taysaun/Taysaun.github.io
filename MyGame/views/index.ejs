@@ -54,36 +54,67 @@
 
     var mouseX;
     var mouseY;
+    var mouseXEvents = [];
+    var mouseYEvents = [];
 
     
-    var eventlist = []
-    window.addEventListener('mousemove', (e) => {
-            eventlist.push(e)
-            if (eventlist.length > 2) {
-                eventlist.splice(0, eventlist.length - 2)
-            }
-            // c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
-            player.x = e.clientX
-            player.y = e.clientY
-            player.xSpeed = Math.abs(e.clientX - eventlist[0].clientX)
-            
-            player.ySpeed = Math.abs(e.clientY - eventlist[0].clientY)
-    
-            player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
-            if (e.clientX - eventlist[0].clientX >= 0) {
-                player.xdirection = 'right'
-            } else {
-                player.xdirection = 'left'
-            }
-            
-            if (e.clientY - eventlist[0].clientY >= 0) {
-                player.ydirection = 'down'
-            } else {
-                player.ydirection = 'up'
-            }
-    })
+    // var eventlist = []
+    window.onmousemove = function(e){
+        // eventlist.push(e)
+        // if (eventlist.length > 2) {
+        //     eventlist.splice(0, eventlist.length - 2)
+        // }
+        // c.clearRect(eventlist[0].clientX, eventlist[0].clientY, player.w, player.h)
+        // player.x = e.clientX
+        // player.y = e.clientY
+        mouseX = e.clientX
+        mouseY = e.clientY
+        // player.xSpeed = Math.abs(e.clientX - eventlist[0].clientX)
+        // player.ySpeed = Math.abs(e.clientY - eventlist[0].clientY)
+        
+        // player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
+        // if (e.clientX - eventlist[0].clientX >= 0) {
+        //     player.xdirection = 'right'
+        // } else {
+        //     player.xdirection = 'left'
+        // }
+        
+        // if (e.clientY - eventlist[0].clientY >= 0) {
+        //     player.ydirection = 'down'
+        // } else {
+        //     player.ydirection = 'up'
+        // }
+        // return true
+    }
     
     let gameLoop = () => {
+        mouseXEvents.push(mouseX)
+        mouseYEvents.push(mouseY)
+        if (mouseXEvents.length > 2) {
+            mouseXEvents.splice(0, mouseXEvents.length - 2)
+        }
+        if (mouseYEvents.length > 2) {
+            mouseYEvents.splice(0, mouseYEvents.length - 2)
+        }
+        player.xSpeed = Math.abs(mouseXEvents[1] - mouseXEvents[0])
+        player.ySpeed = Math.abs(mouseYEvents[1] - mouseYEvents[0])
+        player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
+
+        if (mouseXEvents[1] - mouseXEvents[0] > 0) {
+            player.xdirection = 'right'
+        } else if (mouseXEvents[1] - mouseXEvents[0] < 0){
+            player.xdirection = 'left'
+        } else {
+            player.xdirection = 'none'
+        }
+        
+        if (mouseYEvents[1] - mouseYEvents[0] > 0) {
+            player.ydirection = 'down'
+        } else if (mouseYEvents[1] - mouseYEvents[0] < 0) {
+            player.ydirection = 'up'
+        } else {
+            player.ydirection = 'none'
+        }
         c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
         c.fillRect(player.x, player.y, player.w, player.h)
         makeBall()
@@ -122,7 +153,6 @@
                 // }
             }
         }
-        console.log(player.xSpeed)
         requestAnimationFrame(gameLoop)
     }
     gameLoop()
@@ -165,6 +195,10 @@
         } else {
             return false
         }
+    }
+
+    function isStopped() {
+
     }
     
 
