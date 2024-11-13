@@ -29,6 +29,7 @@
         h: 140,
         xdirection: '',
         ydirection: '',
+        angle: 0,
         speed: 0,
         xSpeed: 0,
         ySpeed: 0, 
@@ -88,6 +89,8 @@
     }
     
     let gameLoop = () => {
+        player.x = mouseX
+        player.y = mouseY
         mouseXEvents.push(mouseX)
         mouseYEvents.push(mouseY)
         if (mouseXEvents.length > 2) {
@@ -115,6 +118,9 @@
         } else {
             player.ydirection = 'none'
         }
+
+        player.angle = Math.acos(player.xSpeed / player.speed)
+        console.log(player.angle)
         c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
         c.fillRect(player.x, player.y, player.w, player.h)
         makeBall()
@@ -135,22 +141,25 @@
         }
         if (playerBallCollision()) {
             if (player.speed == 0) {
-                collision(ball.x)
+                if (playerBallCollision() == 'x') {
+                    collision(ball.x)
+                }
+                if (playerBallCollision() == 'y') {
+                    collision(ball.y)
+                }
             } else {
-                ball.x.speed = player.xSpeed
-                ball.y.speed = player.ySpeed
-                // if (player.xdirection == 'right') {
-                //     ball.x.position += player.xSpeed
-                // } 
-                // if (player.xdirection == 'left') {
-                //     ball.x.position -= player.xSpeed
-                // }
-                // if (player.ydirection == 'down') {
-                //     ball.y.position += player.ySpeed
-                // } 
-                // if (player.ydirection == 'up') {
-                //     ball.y.position -= player.ySpeed
-                // }
+                if (player.xdirection == 'right') {
+                    ball.x.speed += player.xSpeed
+                } 
+                if (player.xdirection == 'left') {
+                    ball.x.speed += -player.xSpeed
+                }
+                if (player.ydirection == 'down') {
+                    ball.y.speed += player.ySpeed
+                } 
+                if (player.ydirection == 'up') {
+                    ball.y.speed += -player.ySpeed
+                }
             }
         }
         requestAnimationFrame(gameLoop)
@@ -186,12 +195,26 @@
     }
 
     function playerBallCollision() {
-        if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
-            if (ball.x.position + ball.r - 3 >= player.x && ball.x.position - ball.r <= player.x + player.w  -3) {
-                return true
-            } else {
-                return false
-            }
+        // if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+        //     if (ball.x.position + ball.r >= player.x - ball.x.speed && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
+        //         return "x"
+        //     } else {
+        //         return false
+        //     }
+        // } else if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
+        //     if (ball.y.position + ball.r - 5 >= player.y - ball.y.speed && ball.y.position - ball.r <= player.y + player.h - ball.y.speed - 5) {
+        //         return "y"
+        //     } else {
+        //         return false
+        //     }
+        // } else {
+        //     return false
+        // }
+        if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - ball.x.speed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
+            return 'x'
+        }
+         if (ball.x.position >= player.x && ball.y.position + ball.r >= player.y - ball.y.speed && ball.x.position <= player.x + player.w && ball.y.position - ball.r <= player.y + player.h - ball.y.speed){
+            return 'y'
         } else {
             return false
         }
