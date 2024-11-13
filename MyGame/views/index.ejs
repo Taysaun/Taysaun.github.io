@@ -25,8 +25,8 @@
     var player = {
         x: 0,
         y: 0,
-        w: 20,
-        h: 140,
+        w: 140,
+        h: 20,
         xdirection: '',
         ydirection: '',
         angle: 0,
@@ -45,12 +45,20 @@
             position: 100
         },
         y: {
-            speed: 0,
+            speed: 50,
             position: 100
         },
         r: 12,
-        speed: 0
+        speed: 0,
+        angle: 0
             
+    }
+
+    var ray = {
+        beginX: 0,
+        beginY: 0,
+        x: 0,
+        y: 0
     }
 
     var mouseX;
@@ -87,6 +95,7 @@
         // }
         // return true
     }
+
     
     let gameLoop = () => {
         player.x = mouseX
@@ -99,8 +108,8 @@
         if (mouseYEvents.length > 2) {
             mouseYEvents.splice(0, mouseYEvents.length - 2)
         }
-        player.xSpeed = Math.abs(mouseXEvents[1] - mouseXEvents[0])
-        player.ySpeed = Math.abs(mouseYEvents[1] - mouseYEvents[0])
+        player.xSpeed = mouseXEvents[1] - mouseXEvents[0]
+        player.ySpeed = mouseYEvents[1] - mouseYEvents[0]
         player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
 
         if (mouseXEvents[1] - mouseXEvents[0] > 0) {
@@ -120,10 +129,11 @@
         }
 
         player.angle = Math.acos(player.xSpeed / player.speed)
-        console.log(player.angle)
+        // console.log(player.angle)
         c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
         c.fillRect(player.x, player.y, player.w, player.h)
         makeBall()
+        createLine()
         ball.x.position += ball.x.speed
         ball.y.position += ball.y.speed
 
@@ -131,6 +141,10 @@
 
         ball.speed = Math.sqrt(ball.x.speed**2 + ball.y.speed**2)
         //make the ball bounce off the top
+        // let positionsLeft = []
+        // for (let i = 0; i < player.x.speed; i++) {
+        //     positionLeft.push(player)
+        // }
         if (ball.x.position + ball.r > body.offsetWidth || ball.x.position - ball.r < 0) {
             //bounce away x
             collision(ball.x)
@@ -139,6 +153,7 @@
             //bounce away y
             collision(ball.y)
         }
+        console.log(playerBallCollision())
         if (playerBallCollision()) {
             if (player.speed == 0) {
                 if (playerBallCollision() == 'x') {
@@ -162,6 +177,7 @@
                 }
             }
         }
+        // console.log(ball.x.speed, ball.y.speed)
         requestAnimationFrame(gameLoop)
     }
     gameLoop()
@@ -183,6 +199,34 @@
         c.fillStyle = "red";
         c.fill()
         c.stroke();
+    }
+
+    function createLine() {
+        c.beginPath()
+        c.moveTo(ball.x.position, ball.y.position)
+        if(ball.x.speed < 0 && ball.y.speed < 0) {
+            c.lineTo(ball.x.position + ball.x.speed - ball.r, ball.y.position + ball.y.speed - ball.r)
+            ray.x = ball.x.position + ball.x.speed - ball.r
+            ray.y = ball.y.position + ball.y.speed - ball.r
+        }
+        if(ball.x.speed > 0 && ball.y.speed > 0) {
+            c.lineTo(ball.x.position + ball.x.speed + ball.r, ball.y.position + ball.y.speed + ball.r)
+            ray.x = ball.x.position + ball.x.speed + ball.r
+            ray.y = ball.y.position + ball.y.speed + ball.r
+        }
+        if(ball.x.speed > 0 && ball.y.speed < 0) {
+            c.lineTo(ball.x.position + ball.x.speed + ball.r, ball.y.position + ball.y.speed - ball.r)
+            ray.x = ball.x.position + ball.x.speed + ball.r
+            ray.y = ball.y.position + ball.y.speed - ball.r
+        }
+        if(ball.x.speed < 0 && ball.y.speed > 0) {
+            c.lineTo(ball.x.position + ball.x.speed - ball.r, ball.y.position + ball.y.speed + ball.r)
+            ray.x = ball.x.position + ball.x.speed - ball.r
+            ray.y = ball.y.position + ball.y.speed + ball.r
+        }
+        ray.beginX = ball.x.position
+        ray.beginY = ball.y.position
+        c.stroke()
     }
     
     function ballHit() {
@@ -210,13 +254,26 @@
         // } else {
         //     return false
         // }
-        if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - ball.x.speed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
-            return 'x'
-        }
-         if (ball.x.position >= player.x && ball.y.position + ball.r >= player.y - ball.y.speed && ball.x.position <= player.x + player.w && ball.y.position - ball.r <= player.y + player.h - ball.y.speed){
-            return 'y'
-        } else {
-            return false
+        
+        // if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - ball.x.speed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
+        //     return 'x'
+        // } else {
+        //     return false
+        // }
+        // if (ball.x.position >= player.x && ball.y.position + ball.r >= player.y - ball.y.speed && ball.x.position <= player.x + player.w && ball.y.position - ball.r <= player.y + player.h - ball.y.speed){
+        //     return 'y'
+        // } else {
+        //     return false
+        // }
+        if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+            if (ray.beginX < player.x && ray.x > player.x || ray.beginX > player.x + player.w && ray.x < player.x + player.w) {
+                return 'x'
+            }
+        } 
+        if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
+            if (ray.beginY < player.y && ray.y > player.y || ray.beginY > player.y + player.h && ray.y < player.y + player.h) {
+                return 'y'
+            }
         }
     }
 
