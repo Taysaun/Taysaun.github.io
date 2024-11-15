@@ -200,6 +200,12 @@
         }
         if (ball.y.position + ball.r > body.offsetHeight || ball.y.position - ball.r < 0) {
             //bounce away y
+            if (ball.y.position + ball.r > body.offsetHeight) {
+                ball.y.position = body.offsetHeight - ball.r
+            }
+            if (ball.y.position - ball.r < 0) {
+                ball.y.position = ball.r
+            }
             collision(ball.y)
         }
         // console.log(playerBallCollision())
