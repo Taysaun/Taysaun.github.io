@@ -25,8 +25,8 @@
     var player = {
         x: 0,
         y: 0,
-        w: 140,
-        h: 20,
+        w: 20,
+        h: 140,
         xdirection: '',
         ydirection: '',
         angle: 0,
@@ -42,11 +42,13 @@
     var ball = {
         x: {
             speed: 0,
-            position: 100
+            position: 500,
+            direction: 'none'
         },
         y: {
-            speed: 50,
-            position: 100
+            speed: 0,
+            position: 500,
+            direction: 'none'
         },
         r: 12,
         speed: 0,
@@ -57,8 +59,15 @@
     var ray = {
         beginX: 0,
         beginY: 0,
-        x: 0,
-        y: 0
+        x: ball.x.position,
+        y: ball.y.position
+    }
+    
+    var playRay = {
+        beginX: 0,
+        beginY: 0,
+        x: ball.x.position,
+        y: ball.y.position
     }
 
     var mouseX;
@@ -111,7 +120,7 @@
         player.xSpeed = mouseXEvents[1] - mouseXEvents[0]
         player.ySpeed = mouseYEvents[1] - mouseYEvents[0]
         player.speed = Math.sqrt(player.xSpeed**2 + player.ySpeed**2)
-
+        
         if (mouseXEvents[1] - mouseXEvents[0] > 0) {
             player.xdirection = 'right'
         } else if (mouseXEvents[1] - mouseXEvents[0] < 0){
@@ -127,55 +136,111 @@
         } else {
             player.ydirection = 'none'
         }
-
-        player.angle = Math.acos(player.xSpeed / player.speed)
+        
+        if (ball.x.speed > 0) {
+            ball.x.direction = 'right'
+        } else if (ball.x.speed < 0) {
+            ball.x.direction = 'left'
+        } else {
+            ball.x.direction = 'none'
+        }
+        
+        if (ball.y.speed > 0) {
+            ball.y.direction = 'down'
+        } else if (ball.y.speed < 0) {
+            ball.y.direction = 'up'
+        } else {
+            ball.y.direction = 'none'
+        }
+        
+        if (player.ydirection == 'down' || player.ydirection == 'none') {
+            player.angle = Math.acos(player.xSpeed / player.speed)
+        }
+        if (player.ydirection == 'up') {
+            player.angle = -Math.acos(player.xSpeed / player.speed)
+        }
         // console.log(player.angle)
+        if (player.x + player.w > body.offsetWidth) {
+            player.x = body.offsetWidth - player.w
+        }
+        if (player.y + player.h > body.offsetHeight) {
+            player.y = body.offsetHeight - player.h
+        }
         c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
         c.fillRect(player.x, player.y, player.w, player.h)
         makeBall()
-        createLine()
+        createRay()
+        createPlayRay()
         ball.x.position += ball.x.speed
         ball.y.position += ball.y.speed
-
         
-
         ball.speed = Math.sqrt(ball.x.speed**2 + ball.y.speed**2)
+        console.log(ball.speed)
+
+        if (ball.speed > 0) {
+            ball.x.speed *= 0.99
+            ball.y.speed *= 0.99
+        }
         //make the ball bounce off the top
         // let positionsLeft = []
         // for (let i = 0; i < player.x.speed; i++) {
         //     positionLeft.push(player)
         // }
+
+        // console.log(player.x)
         if (ball.x.position + ball.r > body.offsetWidth || ball.x.position - ball.r < 0) {
             //bounce away x
+            if (ball.x.position + ball.r > body.offsetWidth) {
+                ball.x.position = body.offsetWidth - ball.r
+            }
+            if (ball.x.position - ball.r < 0) {
+                ball.x.position = ball.r
+            }
             collision(ball.x)
         }
         if (ball.y.position + ball.r > body.offsetHeight || ball.y.position - ball.r < 0) {
             //bounce away y
             collision(ball.y)
         }
-        console.log(playerBallCollision())
+        // console.log(playerBallCollision())
         if (playerBallCollision()) {
             if (player.speed == 0) {
-                if (playerBallCollision() == 'x') {
-                    collision(ball.x)
-                }
-                if (playerBallCollision() == 'y') {
-                    collision(ball.y)
-                }
-            } else {
-                if (player.xdirection == 'right') {
+                    if (playerBallCollision() == 'x') {
+                        collision(ball.x)
+                    }
+                    if (playerBallCollision() == 'y') {
+                        collision(ball.y)
+                    }
+            } else if (player.speed > ball.speed) {
+                ball.x.speed += player.xSpeed
+                ball.y.speed += player.ySpeed
+            } else if (player.speed < ball.speed) {
+                if (ball.x.direction != player.xdirection) {
                     ball.x.speed += player.xSpeed
+                    collision(ball.x)
                 } 
-                if (player.xdirection == 'left') {
-                    ball.x.speed += -player.xSpeed
-                }
-                if (player.ydirection == 'down') {
+                if (ball.y.direction != player.ydirection) {
                     ball.y.speed += player.ySpeed
+                    collision(ball.y)
                 } 
-                if (player.ydirection == 'up') {
-                    ball.y.speed += -player.ySpeed
-                }
             }
+            // else if (player.speed < ball.speed) {
+            //     if (playerBallCollision() == 'x') {
+            //             collision(ball.x)
+            //         }
+            //         if (playerBallCollision() == 'y') {
+            //             collision(ball.y)
+            //         }
+            // }
+            // else if(player.speed > ball.speed) {
+            //         ball.x.speed += player.xSpeed
+            //         ball.y.speed += player.ySpeed
+            // } else if(player.speed < ball.speed) {
+            //         if(playerBallCollision() == 'x') {
+            //             collision(ball.x)
+            //             ball.x.speed += player.xSpeed
+            //         }
+            // }
         }
         // console.log(ball.x.speed, ball.y.speed)
         requestAnimationFrame(gameLoop)
@@ -201,32 +266,35 @@
         c.stroke();
     }
 
-    function createLine() {
-        c.beginPath()
-        c.moveTo(ball.x.position, ball.y.position)
-        if(ball.x.speed < 0 && ball.y.speed < 0) {
-            c.lineTo(ball.x.position + ball.x.speed - ball.r, ball.y.position + ball.y.speed - ball.r)
-            ray.x = ball.x.position + ball.x.speed - ball.r
-            ray.y = ball.y.position + ball.y.speed - ball.r
-        }
-        if(ball.x.speed > 0 && ball.y.speed > 0) {
-            c.lineTo(ball.x.position + ball.x.speed + ball.r, ball.y.position + ball.y.speed + ball.r)
-            ray.x = ball.x.position + ball.x.speed + ball.r
-            ray.y = ball.y.position + ball.y.speed + ball.r
-        }
-        if(ball.x.speed > 0 && ball.y.speed < 0) {
-            c.lineTo(ball.x.position + ball.x.speed + ball.r, ball.y.position + ball.y.speed - ball.r)
-            ray.x = ball.x.position + ball.x.speed + ball.r
-            ray.y = ball.y.position + ball.y.speed - ball.r
-        }
-        if(ball.x.speed < 0 && ball.y.speed > 0) {
-            c.lineTo(ball.x.position + ball.x.speed - ball.r, ball.y.position + ball.y.speed + ball.r)
-            ray.x = ball.x.position + ball.x.speed - ball.r
-            ray.y = ball.y.position + ball.y.speed + ball.r
-        }
+    function createRay() {
         ray.beginX = ball.x.position
         ray.beginY = ball.y.position
-        c.stroke()
+        c.beginPath()
+        c.moveTo(ray.beginX, ray.beginY)
+        if(ball.x.speed < 0) {
+            ray.x = ray.beginX + ball.x.speed - ball.r
+        } else if(ball.x.speed > 0) {
+            ray.x = ray.beginX + ball.x.speed + ball.r
+        }
+        if(ball.y.speed < 0) {
+            ray.y = ray.beginY + ball.y.speed - ball.r
+        } else if(ball.y.speed > 0) {
+            ray.y = ray.beginY + ball.y.speed + ball.r
+        }
+        c.lineTo(ray.x, ray.y)
+        // c.stroke()
+    }
+    
+    function createPlayRay() {
+        playRay.beginX = ball.x.position
+        playRay.beginY = ball.y.position
+        c.beginPath()
+        c.moveTo(playRay.beginX, playRay.beginY)
+        playRay.x = playRay.beginX - Math.cos(player.angle) * 12 - player.xSpeed - 2
+        playRay.y = playRay.beginY - Math.sin(player.angle) * 12 - player.ySpeed - 2
+        // console.log(playRay.x, playRay.y)
+        c.lineTo(playRay.x, playRay.y)
+        // c.stroke()
     }
     
     function ballHit() {
@@ -255,7 +323,7 @@
         //     return false
         // }
         
-        // if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - ball.x.speed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
+        // if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - player.xSpeed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - player.xSpeed) {
         //     return 'x'
         // } else {
         //     return false
@@ -265,13 +333,27 @@
         // } else {
         //     return false
         // }
+
         if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
             if (ray.beginX < player.x && ray.x > player.x || ray.beginX > player.x + player.w && ray.x < player.x + player.w) {
+                if (ball.x.direction == 'right' && ball.x.position > player.x + player.w) {
+                    ball.x.position = player.x - ball.r
+                } else if (ball.x.direction == 'left' && ball.x.position < player.x) {
+                    ball.x.position = player.x + player.w + ball.r
+                }
+                return 'x'
+            }
+            if (playRay.beginX < player.x && playRay.x > player.x || playRay.beginX > player.x + player.w && playRay.x < player.x + player.w) {
                 return 'x'
             }
         } 
         if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
             if (ray.beginY < player.y && ray.y > player.y || ray.beginY > player.y + player.h && ray.y < player.y + player.h) {
+                if (ball.y.direction == 'down' && ball.y.position > player.y + player.h) {
+                    ball.y.position = player.y - ball.r
+                } else if (ball.y.direction == 'up' && ball.y.position < player.y) {
+                    ball.y.position = player.y + player.h + ball.r
+                }
                 return 'y'
             }
         }
