@@ -1,0 +1,11 @@
+make the list of conversations that one can link into
+create the option to start a knew conversation once the user logs in
+
+conversation data will be stored in the database
+
+//note
+conversations.ejs has embedded JS that iterates through the keys of an object called conversations, and displays them into an unordered list
+each of these list items have a link to an endpoint that is the exact name of the conversation
+
+//note
+conversations.ejs has a link to start a new conversation to the endpoint "/newConversation"
