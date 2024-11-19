@@ -166,6 +166,15 @@
         if (player.y + player.h > body.offsetHeight) {
             player.y = body.offsetHeight - player.h
         }
+
+        // if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+        //     if ((player.x + player.w > playRay.x || player.x + player.w > ball.x.position - ball.r) && player.x + player.w < ball.x.position) {
+        //         player.x = ball.x.position - ball.r - player.w
+        //     }
+        //     if ((player.x < playRay.x || player.x < ball.x.position + ball.r) && player.x > ball.x.position) {
+        //         player.x = ball.x.position + ball.r
+        //     }
+        // } 
         c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
         c.fillRect(player.x, player.y, player.w, player.h)
         makeBall()
@@ -175,7 +184,7 @@
         ball.y.position += ball.y.speed
         
         ball.speed = Math.sqrt(ball.x.speed**2 + ball.y.speed**2)
-        console.log(ball.speed)
+        // console.log(ball.speed)
 
         if (ball.speed > 0) {
             ball.x.speed *= 0.99
@@ -296,11 +305,11 @@
         playRay.beginY = ball.y.position
         c.beginPath()
         c.moveTo(playRay.beginX, playRay.beginY)
-        playRay.x = playRay.beginX - Math.cos(player.angle) * 12 - player.xSpeed - 2
-        playRay.y = playRay.beginY - Math.sin(player.angle) * 12 - player.ySpeed - 2
+        playRay.x = playRay.beginX - Math.cos(player.angle) * 12 - player.xSpeed 
+        playRay.y = playRay.beginY - Math.sin(player.angle) * 12 - player.ySpeed 
         // console.log(playRay.x, playRay.y)
         c.lineTo(playRay.x, playRay.y)
-        // c.stroke()
+        c.stroke()
     }
     
     function ballHit() {
@@ -340,6 +349,8 @@
         //     return false
         // }
 
+
+
         if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
             if (ray.beginX < player.x && ray.x > player.x || ray.beginX > player.x + player.w && ray.x < player.x + player.w) {
                 if (ball.x.direction == 'right' && ball.x.position > player.x + player.w) {
@@ -350,6 +361,11 @@
                 return 'x'
             }
             if (playRay.beginX < player.x && playRay.x > player.x || playRay.beginX > player.x + player.w && playRay.x < player.x + player.w) {
+                if (player.xdirection == 'right' && player.x > ball.x.position + ball.r) {
+                    player.x = ball.x.position - ball.r - player.w
+                } else if (player.xdirection == 'left' && player.x < ball.x.position - ball.r - player.w) {
+                    player.x = ball.x.position + ball.r
+                }
                 return 'x'
             }
         } 

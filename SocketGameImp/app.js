@@ -3,12 +3,6 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
-app.set('view engine', 'ejs')
-
-app.get('/', (req, res) => {
-    res.render('index')
-})
-
 var ball = {
     x: {
         speed: 0,
@@ -22,11 +16,27 @@ var ball = {
     },
     r: 12,
     speed: 0,
-    angle: 0   
+    angle: 0
+        
 }
 
+var players = {
+    player1: undefined,
+    player2: undefined
+}
+
+app.set('view engine', 'ejs')
+
+app.get('/', (req, res) => {
+    res.render('index')
+})
+
 io.on('connection', (socket) => {
-    console.log('player connection')
+    console.log('connection')
+    socket.on('updateBall', (ballOb) => {
+        ball = ballOb
+        io.emit('sendBall', ball, players.player1)
+    })
 })
 
 http.listen(3000, (err) => {

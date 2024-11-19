@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            height: 100vh;
-        }
-    </style>
+    <title>Document</title>
 </head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+    }
+</style>
 <body>
     <canvas id="canvas" style="display: block"></canvas>
 </body>
@@ -24,59 +24,14 @@
     var canvas = document.getElementById('canvas')
     var c = canvas.getContext('2d')
     var body = document.querySelector('body')
-    var player = {
-        x: 0,
-        y: 0,
-        w: 20,
-        h: 140,
-        xdirection: '',
-        ydirection: '',
-        angle: 0,
-        speed: 0,
-        xSpeed: 0,
-        ySpeed: 0, 
-        color: "blue"
-    }
 
-    
-    var ball = {
-        x: {
-            speed: 0,
-            position: 500,
-            direction: 'none'
-        },
-        y: {
-            speed: 0,
-            position: 500,
-            direction: 'none'
-        },
-        r: 12,
-        speed: 0,
-        angle: 0 
-    };
-    
-    
-    var ray = {
-        beginX: 0,
-        beginY: 0,
-        x: ball.x.position,
-        y: ball.y.position
-    }
-    
-    var playRay = {
-        beginX: 0,
-        beginY: 0,
-        x: ball.x.position,
-        y: ball.y.position
-    }
+    var ball;
 
     var mouseX;
     var mouseY;
     var mouseXEvents = [];
     var mouseYEvents = [];
 
-    
-    // var eventlist = []
     window.onmousemove = function(e){
         // eventlist.push(e)
         // if (eventlist.length > 2) {
@@ -104,10 +59,176 @@
         // }
         // return true
     }
-
     
-    let gameLoop = () => {
-        player.x = mouseX
+
+        var player = {
+        x: 0,
+        y: 0,
+        w: 20,
+        h: 140,
+        xdirection: '',
+        ydirection: '',
+        angle: 0,
+        speed: 0,
+        xSpeed: 0,
+        ySpeed: 0, 
+        color: "blue",
+        isMoving() {
+
+        }
+    }
+
+    var ball = {
+    x: {
+        speed: 0,
+        position: 500,
+        direction: 'none'
+    },
+    y: {
+        speed: 0,
+        position: 500,
+        direction: 'none'
+    },
+    r: 12,
+    speed: 0,
+    angle: 0
+        
+}
+
+    var ray = {
+        beginX: 0,
+        beginY: 0,
+        x: ball.x.position,
+        y: ball.y.position
+    }
+    
+    var playRay = {
+        beginX: 0,
+        beginY: 0,
+        x: ball.x.position,
+        y: ball.y.position
+    }
+
+        function resize() {
+            canvas.setAttribute('height', body.offsetHeight)
+            canvas.setAttribute('width', body.offsetWidth)
+        }
+        resize()
+        
+        window.addEventListener('resize', () => {
+            resize()
+        })
+        
+        function makeBall() {
+            c.beginPath();
+            c.arc(ball.x.position, ball.y.position, ball.r, 0, 2*Math.PI);
+            c.fillStyle = "red";
+            c.fill()
+            c.stroke();
+        }
+
+        function createRay() {
+        ray.beginX = ball.x.position
+        ray.beginY = ball.y.position
+        c.beginPath()
+        c.moveTo(ray.beginX, ray.beginY)
+        if(ball.x.speed < 0) {
+            ray.x = ray.beginX + ball.x.speed - ball.r
+        } else if(ball.x.speed > 0) {
+            ray.x = ray.beginX + ball.x.speed + ball.r
+        }
+        if(ball.y.speed < 0) {
+            ray.y = ray.beginY + ball.y.speed - ball.r
+        } else if(ball.y.speed > 0) {
+            ray.y = ray.beginY + ball.y.speed + ball.r
+        }
+        c.lineTo(ray.x, ray.y)
+        // c.stroke()
+    }
+    
+    function createPlayRay() {
+        playRay.beginX = ball.x.position
+        playRay.beginY = ball.y.position
+        c.beginPath()
+        c.moveTo(playRay.beginX, playRay.beginY)
+        playRay.x = playRay.beginX - Math.cos(player.angle) * 12 - player.xSpeed 
+        playRay.y = playRay.beginY - Math.sin(player.angle) * 12 - player.ySpeed 
+        // console.log(playRay.x, playRay.y)
+        c.lineTo(playRay.x, playRay.y)
+        // c.stroke()
+    }
+
+    function collision(ball) {
+        // when there is no extra force
+        // if the player is touching the ball
+        ball.speed = -ball.speed
+    }
+
+    function playerBallCollision() {
+        // if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+        //     if (ball.x.position + ball.r >= player.x - ball.x.speed && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
+        //         return "x"
+        //     } else {
+        //         return false
+        //     }
+        // } else if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
+        //     if (ball.y.position + ball.r - 5 >= player.y - ball.y.speed && ball.y.position - ball.r <= player.y + player.h - ball.y.speed - 5) {
+        //         return "y"
+        //     } else {
+        //         return false
+        //     }
+        // } else {
+        //     return false
+        // }
+        
+        // if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - player.xSpeed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - player.xSpeed) {
+        //     return 'x'
+        // } else {
+        //     return false
+        // }
+        // if (ball.x.position >= player.x && ball.y.position + ball.r >= player.y - ball.y.speed && ball.x.position <= player.x + player.w && ball.y.position - ball.r <= player.y + player.h - ball.y.speed){
+        //     return 'y'
+        // } else {
+        //     return false
+        // }
+
+
+
+        if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+            if (ray.beginX < player.x && ray.x > player.x || ray.beginX > player.x + player.w && ray.x < player.x + player.w) {
+                if (ball.x.direction == 'right' && ball.x.position > player.x + player.w) {
+                    ball.x.position = player.x - ball.r
+                } else if (ball.x.direction == 'left' && ball.x.position < player.x) {
+                    ball.x.position = player.x + player.w + ball.r
+                }
+                return 'x'
+            }
+            if (playRay.beginX < player.x && playRay.x > player.x || playRay.beginX > player.x + player.w && playRay.x < player.x + player.w) {
+                if (player.xdirection == 'right' && player.x > ball.x.position + ball.r) {
+                    player.x = ball.x.position - ball.r - player.w
+                } else if (player.xdirection == 'left' && player.x < ball.x.position - ball.r - player.w) {
+                    player.x = ball.x.position + ball.r
+                }
+                return 'x'
+            }
+        } 
+        if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
+            if (ray.beginY < player.y && ray.y > player.y || ray.beginY > player.y + player.h && ray.y < player.y + player.h) {
+                if (ball.y.direction == 'down' && ball.y.position > player.y + player.h) {
+                    ball.y.position = player.y - ball.r
+                } else if (ball.y.direction == 'up' && ball.y.position < player.y) {
+                    ball.y.position = player.y + player.h + ball.r
+                }
+                return 'y'
+            }
+        }
+    }
+        
+        let gameLoop = () => {
+            socket.on('sendBall', (ballOb) => {
+                ball = ballOb
+            })
+            player.x = mouseX
         player.y = mouseY
         mouseXEvents.push(mouseX)
         mouseYEvents.push(mouseY)
@@ -166,6 +287,15 @@
         if (player.y + player.h > body.offsetHeight) {
             player.y = body.offsetHeight - player.h
         }
+
+        // if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
+        //     if ((player.x + player.w > playRay.x || player.x + player.w > ball.x.position - ball.r) && player.x + player.w < ball.x.position) {
+        //         player.x = ball.x.position - ball.r - player.w
+        //     }
+        //     if ((player.x < playRay.x || player.x < ball.x.position + ball.r) && player.x > ball.x.position) {
+        //         player.x = ball.x.position + ball.r
+        //     }
+        // } 
         c.clearRect(0, 0, body.offsetWidth, body.offsetHeight)
         c.fillRect(player.x, player.y, player.w, player.h)
         makeBall()
@@ -175,7 +305,7 @@
         ball.y.position += ball.y.speed
         
         ball.speed = Math.sqrt(ball.x.speed**2 + ball.y.speed**2)
-        console.log(ball.speed)
+        // console.log(ball.speed)
 
         if (ball.speed > 0) {
             ball.x.speed *= 0.99
@@ -248,128 +378,13 @@
             //         }
             // }
         }
-        // console.log(ball.x.speed, ball.y.speed)
-        requestAnimationFrame(gameLoop)
-    }
-    gameLoop()
-    
-    
-    function resize() {
-        canvas.setAttribute('height', body.offsetHeight)
-        canvas.setAttribute('width', body.offsetWidth)
-    }
-    resize()
-    
-    window.addEventListener('resize', () => {
-        resize()
-    })
-
-    function makeBall() {
-        c.beginPath();
-        c.arc(ball.x.position, ball.y.position, ball.r, 0, 2*Math.PI);
-        c.fillStyle = "red";
-        c.fill()
-        c.stroke();
-    }
-
-    function createRay() {
-        ray.beginX = ball.x.position
-        ray.beginY = ball.y.position
-        c.beginPath()
-        c.moveTo(ray.beginX, ray.beginY)
-        if(ball.x.speed < 0) {
-            ray.x = ray.beginX + ball.x.speed - ball.r
-        } else if(ball.x.speed > 0) {
-            ray.x = ray.beginX + ball.x.speed + ball.r
+            
+            socket.emit('updateBall', ball)
+            requestAnimationFrame(gameLoop)
         }
-        if(ball.y.speed < 0) {
-            ray.y = ray.beginY + ball.y.speed - ball.r
-        } else if(ball.y.speed > 0) {
-            ray.y = ray.beginY + ball.y.speed + ball.r
-        }
-        c.lineTo(ray.x, ray.y)
-        // c.stroke()
-    }
+        gameLoop()
     
-    function createPlayRay() {
-        playRay.beginX = ball.x.position
-        playRay.beginY = ball.y.position
-        c.beginPath()
-        c.moveTo(playRay.beginX, playRay.beginY)
-        playRay.x = playRay.beginX - Math.cos(player.angle) * 12 - player.xSpeed - 2
-        playRay.y = playRay.beginY - Math.sin(player.angle) * 12 - player.ySpeed - 2
-        // console.log(playRay.x, playRay.y)
-        c.lineTo(playRay.x, playRay.y)
-        // c.stroke()
-    }
     
-    function ballHit() {
-    }
-
-    function collision(ball) {
-        // when there is no extra force
-        // if the player is touching the ball
-        ball.speed = -ball.speed
-    }
-
-    function playerBallCollision() {
-        // if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
-        //     if (ball.x.position + ball.r >= player.x - ball.x.speed && ball.x.position - ball.r <= player.x + player.w - ball.x.speed) {
-        //         return "x"
-        //     } else {
-        //         return false
-        //     }
-        // } else if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
-        //     if (ball.y.position + ball.r - 5 >= player.y - ball.y.speed && ball.y.position - ball.r <= player.y + player.h - ball.y.speed - 5) {
-        //         return "y"
-        //     } else {
-        //         return false
-        //     }
-        // } else {
-        //     return false
-        // }
-        
-        // if (ball.y.position >= player.y && ball.x.position + ball.r >= player.x - player.xSpeed && ball.y.position <= player.y + player.h && ball.x.position - ball.r <= player.x + player.w - player.xSpeed) {
-        //     return 'x'
-        // } else {
-        //     return false
-        // }
-        // if (ball.x.position >= player.x && ball.y.position + ball.r >= player.y - ball.y.speed && ball.x.position <= player.x + player.w && ball.y.position - ball.r <= player.y + player.h - ball.y.speed){
-        //     return 'y'
-        // } else {
-        //     return false
-        // }
-
-        if (ball.y.position >= player.y && ball.y.position <= player.y + player.h) {
-            if (ray.beginX < player.x && ray.x > player.x || ray.beginX > player.x + player.w && ray.x < player.x + player.w) {
-                if (ball.x.direction == 'right' && ball.x.position > player.x + player.w) {
-                    ball.x.position = player.x - ball.r
-                } else if (ball.x.direction == 'left' && ball.x.position < player.x) {
-                    ball.x.position = player.x + player.w + ball.r
-                }
-                return 'x'
-            }
-            if (playRay.beginX < player.x && playRay.x > player.x || playRay.beginX > player.x + player.w && playRay.x < player.x + player.w) {
-                return 'x'
-            }
-        } 
-        if (ball.x.position >= player.x && ball.x.position <= player.x + player.w) {
-            if (ray.beginY < player.y && ray.y > player.y || ray.beginY > player.y + player.h && ray.y < player.y + player.h) {
-                if (ball.y.direction == 'down' && ball.y.position > player.y + player.h) {
-                    ball.y.position = player.y - ball.r
-                } else if (ball.y.direction == 'up' && ball.y.position < player.y) {
-                    ball.y.position = player.y + player.h + ball.r
-                }
-                return 'y'
-            }
-        }
-    }
-
-    function isStopped() {
-
-    }
     
-
-
 </script>
 </html>
