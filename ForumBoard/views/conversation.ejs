@@ -6,6 +6,8 @@
     <title>conversation</title>
 </head>
 <body>
-    <h1><%= conversation %></h1>
+    <% conversation.forEach((conversation) => { %>
+        <p><%= conversation.date %>: <%= conversation.content %></p>
+    <% }) %>
 </body>
 </html>

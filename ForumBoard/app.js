@@ -91,13 +91,30 @@ app.get('/conversations', isAuthenticated, (req, res) => {
 })
 
 app.get('/conversation/:id', isAuthenticated, (req, res) => {
-    let conversation = req.params['id']
+    // let conversation = req.params['id']
     db.all('SELECT * FROM content WHERE conversationid = ?', req.params['id'], (err, row) => {
         if (err) {
             console.log(err)
         } else if (row) {
             console.log(row)
             res.render('conversation', {conversation: row})
+        }
+    })
+})
+
+app.get('/newConversation', isAuthenticated, (req, res) => {
+    res.render('newConversation')
+})
+
+app.post('/newConversation', (req, res) => {
+    let newCon = req.body.convoName
+    db.get('SELECT * FROM users WHERE fb_name = ?', req.session.user, (err, row) => {
+        if (err) {
+            console.log(err)
+        } else if(row) {
+            console.log(row)
+            db.run('INSERT INTO conversations(name, posterId) VALUES(?, ?);', [newCon, row.uid])
+            res.redirect('/conversations')
         }
     })
 })
