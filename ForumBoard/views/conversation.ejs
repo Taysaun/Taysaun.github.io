@@ -6,8 +6,10 @@
     <title>conversation</title>
 </head>
 <body>
+    <h1><%= conversation[0].name %></h1>
+    <h3><%= sender.fb_name %>: <%= conversation[0].sendContent %></h3>
     <% conversation.forEach((conversation) => { %>
-        <p><%= conversation.date %>: <%= conversation.content %></p>
+        <p><b><%= conversation.date %> <%= conversation.fb_name %>:</b> <%= conversation.content %></p>
     <% }) %>
 </body>
 </html>

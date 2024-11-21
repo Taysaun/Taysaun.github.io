@@ -76,7 +76,7 @@ app.get('/conversations', isAuthenticated, (req, res) => {
                     posterId: con.posterId
                 }
             })
-            console.log(conversations)
+            // console.log(conversations)
             try {
                 res.render('conversations', { 
                     conversations: conversations,
@@ -92,12 +92,22 @@ app.get('/conversations', isAuthenticated, (req, res) => {
 
 app.get('/conversation/:id', isAuthenticated, (req, res) => {
     // let conversation = req.params['id']
-    db.all('SELECT * FROM content WHERE conversationid = ?', req.params['id'], (err, row) => {
+    db.all('SELECT * FROM content CROSS JOIN conversations ON content.conversationid = conversations.uid CROSS JOIN users ON content.userid = users.uid WHERE conversationid = ?', req.params['id'], (err, row) => {
         if (err) {
             console.log(err)
         } else if (row) {
             console.log(row)
-            res.render('conversation', {conversation: row})
+            db.get('SELECT * FROM users WHERE uid = ?', row[0].posterId, (err, sendRow) => {
+                if(err) {
+                    console.log(err)
+                } else {
+                    console.log(sendRow)
+                    res.render('conversation', {
+                        conversation: row,
+                        sender: sendRow
+                    })
+                }
+            })
         }
     })
 })
@@ -108,12 +118,13 @@ app.get('/newConversation', isAuthenticated, (req, res) => {
 
 app.post('/newConversation', (req, res) => {
     let newCon = req.body.convoName
+    let newPost = req.body.convoText
     db.get('SELECT * FROM users WHERE fb_name = ?', req.session.user, (err, row) => {
         if (err) {
             console.log(err)
         } else if(row) {
-            console.log(row)
-            db.run('INSERT INTO conversations(name, posterId) VALUES(?, ?);', [newCon, row.uid])
+            // console.log(row)
+            db.run('INSERT INTO conversations(name, posterId, content) VALUES(?, ?, ?);', [newCon, row.uid, newPost])
             res.redirect('/conversations')
         }
     })
