@@ -69,17 +69,10 @@ app.get('/conversations', isAuthenticated, (req, res) => {
         if (err) {
             console.log(err)
         } else if (row) {
-            let conversations = {};
-            row.forEach(con => {
-                conversations[con.name] = {
-                    uid: con.uid,
-                    posterId: con.posterId
-                }
-            })
-            // console.log(conversations)
+            console.log(row)
             try {
                 res.render('conversations', { 
-                    conversations: conversations,
+                    conversations: row,
                     user: req.session.user
                 })
             }
@@ -91,21 +84,39 @@ app.get('/conversations', isAuthenticated, (req, res) => {
 })
 
 app.get('/conversation/:id', isAuthenticated, (req, res) => {
-    // let conversation = req.params['id']
-    db.all('SELECT * FROM content CROSS JOIN conversations ON content.conversationid = conversations.uid CROSS JOIN users ON content.userid = users.uid WHERE conversationid = ?', req.params['id'], (err, row) => {
+    // console.log(req.params.id)
+    db.get('SELECT * FROM conversations CROSS JOIN users ON conversations.posterId = users.uid WHERE conversations.uid = ?', req.params['id'], (err, sendRow) => {
+        if(err) {
+            console.log(err)
+        } else {
+            console.log(sendRow)
+            db.all('SELECT * FROM content CROSS JOIN users ON content.userid = users.uid WHERE content.conversationid = ?', req.params['id'], (err, row) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(row)
+                    res.render('conversation', {
+                        content: row,
+                        conversation: sendRow
+                    })
+                }
+            })
+        }
+    })
+})
+
+app.post('/conversation/:id', (req, res) => {
+    console.log(req.body.convoText)
+    console.log(req.params.id)
+    db.get('SELECT * FROM users WHERE fb_name = ?', req.session.user, (err, row) => {
         if (err) {
             console.log(err)
-        } else if (row) {
-            console.log(row)
-            db.get('SELECT * FROM users WHERE uid = ?', row[0].posterId, (err, sendRow) => {
+        } else {
+            db.run('INSERT INTO content(userid, conversationid, content) VALUES(?, ?, ?)', [row.uid, req.params.id, req.body.convoText], (err) => {
                 if(err) {
                     console.log(err)
                 } else {
-                    console.log(sendRow)
-                    res.render('conversation', {
-                        conversation: row,
-                        sender: sendRow
-                    })
+                    res.redirect(`/conversation/${req.params.id}`)
                 }
             })
         }
@@ -124,7 +135,7 @@ app.post('/newConversation', (req, res) => {
             console.log(err)
         } else if(row) {
             // console.log(row)
-            db.run('INSERT INTO conversations(name, posterId, content) VALUES(?, ?, ?);', [newCon, row.uid, newPost])
+            db.run('INSERT INTO conversations(name, posterId, sendContent) VALUES(?, ?, ?);', [newCon, row.uid, newPost])
             res.redirect('/conversations')
         }
     })

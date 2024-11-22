@@ -10,8 +10,8 @@
     <% if (conversations) { %>
         <h3>Available Conversations</h3>
         <ul>
-            <% Object.keys(conversations).forEach((conversation) => { %>
-                <li><a href="/conversation/<%=conversations[conversation].uid%>"><%= conversation %></a></li>
+            <% conversations.forEach((conversation) => { %>
+                <li><a href="/conversation/<%=conversation.uid%>"><%= conversation.name %></a></li>
             <% }) %>
         </ul>
     <% } else { %>
