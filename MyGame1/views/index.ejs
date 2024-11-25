@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" style="display: block; border: 1px solid black;" width="1720" height="920"></canvas>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io()
+    var canvas = document.getElementById('canvas')
+    var c = canvas.getContext('2d')
+    var body = document.querySelector('body')
+    
+    canvas.addEventListener('click', () => {
+        socket.emit('click')
+    })
+    
+
+
+</script>
+</html>
