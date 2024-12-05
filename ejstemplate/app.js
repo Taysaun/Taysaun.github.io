@@ -20,9 +20,10 @@ app.get('/print', (req, res) => {
 // </body>
 // <%- include('../partials/foot.ejs') %>
 //     `)
-    ejs.renderFile('./views/index.ejs')
-    fs.writeFileSync('index.html', `<%- include('../views/index.ejs') %>`)
-    res.send('I think it worked')
+    ejs.renderFile('./views/index.ejs', {viewport: "offline"}, (err, template) => {
+        fs.writeFileSync('index.html', template)
+        res.send('I think it worked')
+    })
 })
 
 app.listen(3000)
