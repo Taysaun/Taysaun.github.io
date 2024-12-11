@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <script src="socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div id="roomlist" style="border: 1px solid black">
+        <ul>
+            <li onclick="room='General'">General</li>
+        </ul>
+    </div>
+    <div id="msgBox" style="border: 1px solid black"></div>
+
+    <textarea id="text"></textarea>
+    <button id="btn">Send</button>
+</body>
+<script>
+    var text = document.getElementById('text')
+    var btn = document.getElementById('btn')
+    var messageBox = document.getElementById('msgBox')
+    var socket = io()
+    var room = 'General'
+    var currentUser = '<%=user%>'
+
+    btn.addEventListener('click', () => {
+        if(slashcommand()) {
+           var command = text.value.split(" ")
+           if (command[0] == "/join") {
+                socket.emit('joinRoom', command[1])
+           }
+        } else {
+            socket.emit('message', text.value, room, currentUser)
+        }
+    })
+
+    socket.on('text', (text, user) => {
+        console.log(text)
+        var p = document.createElement('p')
+        messageBox.appendChild(p).innerText = `${user}: ${text}`
+    }) 
+
+    socket.on('roomList', (list) => {
+        console.log(list)
+    })
+
+    function slashcommand() {
+        if (text.value.includes('/')) {
+            return true
+        } else {
+            return false
+        }
+    }
+</script>
+</html>

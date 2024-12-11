@@ -16,6 +16,7 @@ io.on('connection', (socket) => {
     socket.on('click', () => {
         console.log(socket.id)
     })
+    socket.emit('newPlayer', socket.id)
 })
 
 http.listen(3000, (err) => {

@@ -24,9 +24,15 @@
     var canvas = document.getElementById('canvas')
     var c = canvas.getContext('2d')
     var body = document.querySelector('body')
+    var id;
     
     canvas.addEventListener('click', () => {
         socket.emit('click')
+    })
+
+    socket.on('newPlayer', (data) => {
+        id = data
+        
     })
     
 
