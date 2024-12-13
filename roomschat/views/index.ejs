@@ -10,7 +10,7 @@
 
 <body>
     <div id="roomlist" style="border: 1px solid black">
-        <div onclick="room='General'" id="General">General</div>
+        <div onclick="currentRoom='General'; console.log(currentRoom)" id="General">General</div>
     </div>
     <div id="msgBox" style="border: 1px solid black"></div>
 
@@ -24,38 +24,49 @@
     var roomlist = document.getElementById('roomlist')
     var socket = io()
     var currentRoom = 'General'
-    var myRooms = ['General']
+    var myRooms = []
     var currentUser = '<%=user%>'
-    
+
     socket.on('text', (text, user) => {
         console.log(text)
         var p = document.createElement('p')
         messageBox.appendChild(p).innerText = `${user}: ${text}`
     })
 
-    
-    
-    btn.addEventListener('click', async function() {
+    function printRooms() {
+        socket.on('roomList', (list) => {
+            myRooms = list
+            myRooms.forEach(room => {
+                var div = document.createElement('div')
+                div.setAttribute("onclick", `currentRoom='${room}'; console.log(currentRoom)`)
+                div.setAttribute("id", `${room}`)
+                div.innerText = `${room}`
+                roomlist.appendChild(div)
+            })
+        })
+    }
+
+    btn.addEventListener('click', function () {
         if (slashcommand()) {
             var command = text.value.split(" ")
             if (command[0] == "/join") {
                 socket.emit('joinRoom', command[1])
                 currentRoom = command[1]
-                myRooms.push(command[1])
-                console.log(myRooms)
                 roomlist.innerHTML = ''
-                myRooms.forEach(room => {
-                    var div = document.createElement('div')
-                    div.setAttribute("onclick", `room='${room}'`)
-                    div.setAttribute("id", `${room}`)
-                    div.innerText = `${room}`
-                    roomlist.appendChild(div)
-                })
+                printRooms()
+            } else if (command[0] == "/leave") {
+                if (command[1] != "General") {
+                    socket.emit('leaveRoom', command[1])
+                    currentRoom = myRooms[myRooms.indexOf(command[1]) - 1]
+                    myRooms.splice(myRooms.indexOf(command[1], 1))
+                    roomlist.innerHTML = ''
+                    printRooms()
+                }
             }
         } else {
             socket.emit('message', text.value, currentRoom, currentUser)
         }
-        console.log(currentRoom)
+        text.value = ''
     })
 
 

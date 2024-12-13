@@ -37,15 +37,31 @@ app.get('/', isAuthenticated, (req, res) => {
 io.on('connection', (socket) => {
     console.log('connection')
     socket.join('General')
+    console.log(socket.rooms)
     socket.on('message', (text, room, user) => {
         io.to(room).emit('text', text, user)
     })
     socket.on('joinRoom', (room) => {
-        console.log(socket.id)
+
         socket.join(room)
         var rooms = []
-        // console.log(socket)
+        socket.rooms.forEach(room => {
+            if (room != socket.id) {
+                rooms.push(room)
+            }
+        });
         console.log(rooms)
+        io.to(socket.id).emit('roomList', rooms)
+    })
+
+    socket.on('leaveRoom', (room) => {
+        socket.leave(room)
+        var rooms = []
+        socket.rooms.forEach(room => {
+            if (room != socket.id) {
+                rooms.push(room)
+            }
+        });
         io.to(socket.id).emit('roomList', rooms)
     })
 })
