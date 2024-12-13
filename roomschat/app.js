@@ -43,8 +43,10 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', (room) => {
         console.log(socket.id)
         socket.join(room)
-        console.log(socket.adapter.rooms)
-        io.to(socket.id).emit('roomList', socket.rooms)
+        var rooms = []
+        // console.log(socket)
+        console.log(rooms)
+        io.to(socket.id).emit('roomList', rooms)
     })
 })
 
