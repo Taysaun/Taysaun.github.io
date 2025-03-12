@@ -27,6 +27,9 @@ function run() {
                 })
                 break;
             case "2":
+                for (let i = 0; i < orders.length; i++) {
+                    interface.write(" " + (i + 1) + ". " + orders[i].name + ": " + orders[i].address + "\n")
+                }
                 break;
             case "3":
                 break;
