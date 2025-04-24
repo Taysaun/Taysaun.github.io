@@ -8,13 +8,12 @@
 <body>
     <h1>Transaction</h1>
     <h2>Balance:</h2>
-    <h3>$##########</h3>
-    <select name="users" id="users">
-        <option value="user1">user1</option>
-        <option value="user2">user2</option>
-        <option value="user3">user3</option>
-    </select>
-    <input type="number" id="amount" placeholder="amount">
+    <h3>$<%= balance.toFixed(2) %></h3>
+    <form action="/transaction" method="post">
+        <input name="accountNumber" type="text" id="accountNumber" placeholder="Account Number" minlength="8" maxlength="8">
+        <input name="amount" type="number" id="amount" placeholder="Amount">
+        <input type="submit" value="Submit">
+    </form>
     <br>
     <a href="/">Back</a>
 </body>
